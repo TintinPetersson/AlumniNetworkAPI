@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AlumniNetworkAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using AlumniNetworkAPI.Models.Domain;
 
 namespace AlumniNetworkAPI.Controllers
 {

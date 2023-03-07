@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AlumniNetworkAPI.Models
+namespace AlumniNetworkAPI.Models.Domain
 {
     public class Event
     {
@@ -17,7 +17,7 @@ namespace AlumniNetworkAPI.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<Post>? Posts { get; set;} //One-to-many
+        public virtual ICollection<Post>? Posts { get; set; } //One-to-many
         public virtual ICollection<Group>? Groups { get; set; } //Many-to-many
         public virtual ICollection<User>? InvitedUsers { get; set; } //Many-to-many
         public virtual ICollection<User>? AcceptedUsers { get; set; } //Many-to-many

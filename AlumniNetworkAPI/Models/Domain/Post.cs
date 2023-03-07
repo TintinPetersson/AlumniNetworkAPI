@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AlumniNetworkAPI.Models
+namespace AlumniNetworkAPI.Models.Domain
 {
     public class Post
     {
@@ -8,6 +8,7 @@ namespace AlumniNetworkAPI.Models
         [Required]
         public DateTime LastUpdated { get; set; }
         [MaxLength(255)]
+        public string Title { get; set; }
         public string Body { get; set; }
 
 

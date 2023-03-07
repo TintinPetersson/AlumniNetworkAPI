@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AlumniNetworkAPI.Models
+namespace AlumniNetworkAPI.Models.Domain
 {
     public class Topic
     {

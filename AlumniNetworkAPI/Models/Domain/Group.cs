@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AlumniNetworkAPI.Models
+namespace AlumniNetworkAPI.Models.Domain
 {
     public class Group
     {
@@ -13,7 +13,7 @@ namespace AlumniNetworkAPI.Models
         [Required]
         public bool IsPrivate { get; set; }
 
-        public virtual ICollection<Event>? Events { get;set; } //Many-to-many
+        public virtual ICollection<Event>? Events { get; set; } //Many-to-many
         public virtual ICollection<Post>? Posts { get; set; } //One-to-many
         public virtual ICollection<User>? Users { get; set; } //Many-to-many
     }
