@@ -9,9 +9,17 @@ namespace AlumniNetworkAPI.Profiles
     {
         public EventProfile()
         {
-            CreateMap<EventCreateDto, Event>();
-            CreateMap<EventEditDto, Event>();
             CreateMap<Event, EventReadDto>();
+
+            CreateMap<Event, EventGroupReadDto>()
+            .ForMember(cdto => cdto.UsersResponded, opt => opt
+            .MapFrom(c => c.AcceptedUsers.Select(c => c.Id).ToArray()));
+
+            CreateMap<Event, EventUserReadDto>();
+
+            CreateMap<EventCreateDto, Event>();
+
+            CreateMap<EventEditDto, Event>();
         }
     }
 }

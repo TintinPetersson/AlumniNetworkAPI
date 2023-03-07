@@ -13,6 +13,5 @@ namespace AlumniNetworkAPI.Profiles
             CreateMap<TopicEditDto, Topic>();
             CreateMap<Topic, TopicReadDto>();
         }
-        
     }
 }

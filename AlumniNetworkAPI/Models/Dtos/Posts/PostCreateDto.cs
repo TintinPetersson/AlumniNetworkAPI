@@ -5,15 +5,12 @@ namespace AlumniNetworkAPI.Models.Dtos.Posts
 {
     public class PostCreateDto
     {
-
-        public string Body { get; set; }
-        public string Title { get; set; }
-        public virtual User Author { get; set; }
-        public virtual User? Reciever { get; set; }
-        public virtual Topic? Topic { get; set; }
-        public virtual Group? Group { get; set; }
-        public virtual Event? Event { get; set; }
-        public virtual Post? ParentPost { get; set; }
-
+        public string? Title { get; set; }
+        public string? Body { get; set; }
+        public int? RecieverId { get; set; }
+        public int? TopicId { get; set; }
+        public int? GroupId { get; set; }
+        public int? EventId { get; set; }
+        public int? ParentId { get; set; }
     }
 }
