@@ -4,6 +4,7 @@ using AlumniNetworkAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlumniNetworkAPI.Migrations
 {
     [DbContext(typeof(AlumniNetworkDbContext))]
-    partial class AlumniNetworkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230307120305_AddEventUsersd")]
+    partial class AddEventUsersd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,10 +211,8 @@ namespace AlumniNetworkAPI.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("KeycloakId")
-                        .IsRequired()
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("KeycloakId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Picture")
                         .HasMaxLength(2147483647)
@@ -237,7 +238,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 1,
                             Bio = "Is from GBG",
                             FunFact = "Formula",
-                            KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb",
+                            KeycloakId = 1,
                             Picture = "Bild.png",
                             Status = "",
                             Username = "Filip"
@@ -247,7 +248,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 2,
                             Bio = "ya",
                             FunFact = "Big Formula",
-                            KeycloakId = "",
+                            KeycloakId = 2,
                             Picture = "Bild2.png",
                             Status = "",
                             Username = "Tommy"
@@ -257,7 +258,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 3,
                             Bio = "Karate",
                             FunFact = "Artist",
-                            KeycloakId = "",
+                            KeycloakId = 3,
                             Picture = "Bild3.png",
                             Status = "",
                             Username = "Maryam"
@@ -267,7 +268,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 4,
                             Bio = "Varberg",
                             FunFact = ".NET utvecklare",
-                            KeycloakId = "",
+                            KeycloakId = 4,
                             Picture = "Bild4.png",
                             Status = "",
                             Username = "TinTin"
@@ -277,7 +278,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 5,
                             Bio = "Älska, älska inte",
                             FunFact = "Bestämd",
-                            KeycloakId = "",
+                            KeycloakId = 5,
                             Picture = "Bild5.png",
                             Status = "",
                             Username = "Annika"
@@ -346,64 +347,17 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("RSVP", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("AcceptedEventsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EventId")
+                    b.Property<int>("AcceptedUsersId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "EventId");
+                    b.HasKey("AcceptedEventsId", "AcceptedUsersId");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("AcceptedUsersId");
 
                     b.ToTable("RSVP");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            EventId = 1
-                        },
-                        new
-                        {
-                            UserId = 5,
-                            EventId = 1
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            EventId = 1
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            EventId = 2
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            EventId = 2
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            EventId = 2
-                        },
-                        new
-                        {
-                            UserId = 5,
-                            EventId = 3
-                        },
-                        new
-                        {
-                            UserId = 1,
-                            EventId = 3
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            EventId = 3
-                        });
                 });
 
             modelBuilder.Entity("TopicUser", b =>
@@ -591,13 +545,13 @@ namespace AlumniNetworkAPI.Migrations
                 {
                     b.HasOne("AlumniNetworkAPI.Models.Event", null)
                         .WithMany()
-                        .HasForeignKey("EventId")
+                        .HasForeignKey("AcceptedEventsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AlumniNetworkAPI.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("AcceptedUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

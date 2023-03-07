@@ -4,8 +4,11 @@ namespace AlumniNetworkAPI.Models
 {
     public class User
     {
+        [Required]
         public int Id { get; set; }
-        public int KeycloakId { get; set; }
+        [Required]
+        [MaxLength(int.MaxValue)]
+        public string KeycloakId { get; set; }
         [MaxLength(40)]
         [Required]
         public string Username { get; set; }
