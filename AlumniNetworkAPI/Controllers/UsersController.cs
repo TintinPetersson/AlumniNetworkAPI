@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AlumniNetworkAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlumniNetworkAPI.Controllers
 {
@@ -21,6 +22,7 @@ namespace AlumniNetworkAPI.Controllers
         }
 
         // GET: api/Users
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
