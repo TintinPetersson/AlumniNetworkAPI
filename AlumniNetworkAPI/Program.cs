@@ -1,4 +1,4 @@
-using AlumniNetworkAPI.Models;
+using AlumniNetworkAPI.Models.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

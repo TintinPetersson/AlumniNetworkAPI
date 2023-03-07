@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 
-namespace AlumniNetworkAPI.Models
+namespace AlumniNetworkAPI.Models.Domain
 {
     public class AlumniNetworkDbContext : DbContext
     {
@@ -57,7 +57,7 @@ namespace AlumniNetworkAPI.Models
                         new { UserId = 1, EventId = 3 },
                         new { UserId = 2, EventId = 3 }
                         );
-                }); 
+                });
 
             modelBuilder.Entity<User>()
             .HasMany(e => e.UnrespondedEvents)
@@ -79,9 +79,9 @@ namespace AlumniNetworkAPI.Models
                 );
 
             modelBuilder.Entity<Event>().HasData(
-               new Event { Id = 1, Name = "Webinar", Description = "Bild.png", AllowGuests = true, BannerImage = "Image"},
-               new Event { Id = 2, Name = "AW", Description = "Bild.png", AllowGuests = true, BannerImage = "Image"},
-               new Event { Id = 3, Name = "Meet-up", Description = "Bild.png", AllowGuests = true, BannerImage = "Image"}
+               new Event { Id = 1, Name = "Webinar", Description = "Bild.png", AllowGuests = true, BannerImage = "Image" },
+               new Event { Id = 2, Name = "AW", Description = "Bild.png", AllowGuests = true, BannerImage = "Image" },
+               new Event { Id = 3, Name = "Meet-up", Description = "Bild.png", AllowGuests = true, BannerImage = "Image" }
 
                );
             modelBuilder.Entity<User>()

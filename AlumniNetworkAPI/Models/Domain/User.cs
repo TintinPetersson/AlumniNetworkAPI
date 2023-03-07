@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AlumniNetworkAPI.Models
+namespace AlumniNetworkAPI.Models.Domain
 {
     public class User
     {
@@ -24,7 +24,7 @@ namespace AlumniNetworkAPI.Models
 
 
         //Many-to-many
-        public virtual ICollection<Topic>? Topics { get; set;}
+        public virtual ICollection<Topic>? Topics { get; set; }
         public virtual ICollection<Group>? Groups { get; set; }
         public virtual ICollection<Event>? AcceptedEvents { get; set; }
         public virtual ICollection<Event>? UnrespondedEvents { get; set; }
