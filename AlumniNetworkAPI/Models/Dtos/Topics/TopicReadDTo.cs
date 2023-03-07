@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AlumniNetworkAPI.Models.Dtos.Topics
 {
-    public class TopicReadDTo
+    public class TopicReadDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
