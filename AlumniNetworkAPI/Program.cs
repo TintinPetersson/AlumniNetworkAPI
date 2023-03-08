@@ -1,4 +1,9 @@
 using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Services.EventServices;
+using AlumniNetworkAPI.Services.GroupServices;
+using AlumniNetworkAPI.Services.PostServices;
+using AlumniNetworkAPI.Services.TopicServices;
+using AlumniNetworkAPI.Services.UserServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -45,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 //builder.Services.AddScoped(typeof(ITopicService), typeof(TopicService));
-//builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
+builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 //builder.Services.AddScoped(typeof(IGroupService), typeof(GroupService));
 //builder.Services.AddScoped(typeof(IPostService), typeof(PostService));
 //builder.Services.AddScoped(typeof(IEventService), typeof(EventService));

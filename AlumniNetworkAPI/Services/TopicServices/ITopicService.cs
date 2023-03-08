@@ -1,6 +1,6 @@
 ﻿namespace AlumniNetworkAPI.Services.TopicServices
 {
-    public class Class
+    public class ITopicService
     {
     }
 }

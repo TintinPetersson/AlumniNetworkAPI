@@ -4,7 +4,7 @@ namespace AlumniNetworkAPI.Helpers
 {
     public static class UserHelper
     {
-        public static string GetId(this ClaimsPrincipal principal)
+        public static string? GetId(this ClaimsPrincipal principal)
         {
             var p = principal;
             if (p != null)
@@ -14,7 +14,7 @@ namespace AlumniNetworkAPI.Helpers
             return null;
         }
 
-        public static string GetUsername(this ClaimsPrincipal principal)
+        public static string? GetUsername(this ClaimsPrincipal principal)
         {
             var p = principal;
             if (p != null)

@@ -7,103 +7,88 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Services.UserServices;
+using AutoMapper;
+using System.Net.Mime;
+using AlumniNetworkAPI.Models.Dtos.Users;
+using AlumniNetworkAPI.Helpers;
+using AlumniNetworkAPI.CustomExceptions;
 
 namespace AlumniNetworkAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class UsersController : ControllerBase
     {
-        private readonly AlumniNetworkDbContext _context;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UsersController(AlumniNetworkDbContext context)
+        public UsersController(IMapper mapper, IUserService userService)
         {
-            _context = context;
+            _mapper = mapper;
+            _userService = userService;
         }
 
         // GET: api/Users
-        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<UserReadDto>> GetUser()
         {
-            return await _context.Users.ToListAsync();
+            string? keycloakId = this.User.GetId();
+
+            if(keycloakId == null)
+            {
+                return BadRequest();
+            }
+            return Ok(_mapper.Map<UserReadDto>(await _userService.GetUserAsync(keycloakId)));
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUserById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
+            try
             {
-                return NotFound();
+                User user = await _userService.GetUserByIdAsync(id);
+                var userDto = _mapper.Map<UserReadDto>(user);
+                return Ok(userDto);
             }
-
-            return user;
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message,
+                });
+            }
         }
 
         // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserEditDto userDto)
         {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _userService.UpdateUserAsync(_mapper.Map<User>(userDto));
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (UserNotFoundException ex)
             {
-                if (!UserExists(id))
+                return NotFound(new ProblemDetails
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Detail = ex.Message,
+                });
             }
-
-            return NoContent();
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+        //// POST: api/Users
+        //[HttpPost]
+        //public async Task<ActionResult<User>> PostUser(User user)
+        //{
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+        //    return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        //}
     }
 }
