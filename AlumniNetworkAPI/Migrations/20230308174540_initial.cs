@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AlumniNetworkAPI.Migrations
 {
     /// <inheritdoc />
@@ -65,7 +67,7 @@ namespace AlumniNetworkAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    KeycloakId = table.Column<int>(type: "int", nullable: false),
+                    KeycloakId = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
                     Username = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Picture = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: true),
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
@@ -126,7 +128,7 @@ namespace AlumniNetworkAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventUser",
+                name: "EventUserInvitation",
                 columns: table => new
                 {
                     InvitedUsersId = table.Column<int>(type: "int", nullable: false),
@@ -134,15 +136,15 @@ namespace AlumniNetworkAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventUser", x => new { x.InvitedUsersId, x.UnrespondedEventsId });
+                    table.PrimaryKey("PK_EventUserInvitation", x => new { x.InvitedUsersId, x.UnrespondedEventsId });
                     table.ForeignKey(
-                        name: "FK_EventUser_Events_UnrespondedEventsId",
+                        name: "FK_EventUserInvitation_Events_UnrespondedEventsId",
                         column: x => x.UnrespondedEventsId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EventUser_Users_InvitedUsersId",
+                        name: "FK_EventUserInvitation_Users_InvitedUsersId",
                         column: x => x.InvitedUsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -150,31 +152,7 @@ namespace AlumniNetworkAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventUser1",
-                columns: table => new
-                {
-                    AcceptedEventsId = table.Column<int>(type: "int", nullable: false),
-                    AcceptedUsersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventUser1", x => new { x.AcceptedEventsId, x.AcceptedUsersId });
-                    table.ForeignKey(
-                        name: "FK_EventUser1_Events_AcceptedEventsId",
-                        column: x => x.AcceptedEventsId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EventUser1_Users_AcceptedUsersId",
-                        column: x => x.AcceptedUsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GroupUser",
+                name: "GroupMember",
                 columns: table => new
                 {
                     GroupsId = table.Column<int>(type: "int", nullable: false),
@@ -182,15 +160,15 @@ namespace AlumniNetworkAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupUser", x => new { x.GroupsId, x.UsersId });
+                    table.PrimaryKey("PK_GroupMember", x => new { x.GroupsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_GroupUser_Groups_GroupsId",
+                        name: "FK_GroupMember_Groups_GroupsId",
                         column: x => x.GroupsId,
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupUser_Users_UsersId",
+                        name: "FK_GroupMember_Users_UsersId",
                         column: x => x.UsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -204,7 +182,8 @@ namespace AlumniNetworkAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
                     RecieverId = table.Column<int>(type: "int", nullable: true),
                     TopicId = table.Column<int>(type: "int", nullable: true),
@@ -251,6 +230,30 @@ namespace AlumniNetworkAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RSVP",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RSVP", x => new { x.UserId, x.EventId });
+                    table.ForeignKey(
+                        name: "FK_RSVP_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RSVP_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TopicUser",
                 columns: table => new
                 {
@@ -274,6 +277,84 @@ namespace AlumniNetworkAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserEvents",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserEvents", x => new { x.UserId, x.EventId });
+                    table.ForeignKey(
+                        name: "FK_UserEvents_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserEvents_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "Id", "AllowGuests", "BannerImage", "Description", "EndTime", "LastUpdated", "Name", "StartTime" },
+                values: new object[,]
+                {
+                    { 1, true, "Image", "Bild.png", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Webinar", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, true, "Image", "Bild.png", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "AW", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, true, "Image", "Bild.png", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Meet-up", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Bio", "FunFact", "KeycloakId", "Picture", "Status", "Username" },
+                values: new object[,]
+                {
+                    { 1, "Is from GBG", "Formula", "2ff40a61-2dea-418b-ad08-06aa0e0498fb", "Bild.png", "", "Filip" },
+                    { 2, "", "Big Formula", "f428f142-cae0-4429-b846-991c67fc4d4f", "", "", "admin" },
+                    { 3, "Karate", "Artist", "", "Bild3.png", "", "Maryam" },
+                    { 4, "Varberg", ".NET utvecklare", "", "Bild4.png", "", "TinTin" },
+                    { 5, "Älska, älska inte", "Bestämd", "", "Bild5.png", "", "Annika" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RSVP",
+                columns: new[] { "EventId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 3, 1 },
+                    { 2, 2 },
+                    { 3, 2 },
+                    { 2, 3 },
+                    { 1, 4 },
+                    { 2, 4 },
+                    { 1, 5 },
+                    { 3, 5 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserEvents",
+                columns: new[] { "EventId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 3, 1 },
+                    { 2, 2 },
+                    { 3, 2 },
+                    { 2, 3 },
+                    { 1, 4 },
+                    { 2, 4 },
+                    { 1, 5 },
+                    { 3, 5 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_EventGroup_GroupsId",
                 table: "EventGroup",
@@ -285,18 +366,13 @@ namespace AlumniNetworkAPI.Migrations
                 column: "TopicsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventUser_UnrespondedEventsId",
-                table: "EventUser",
+                name: "IX_EventUserInvitation_UnrespondedEventsId",
+                table: "EventUserInvitation",
                 column: "UnrespondedEventsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventUser1_AcceptedUsersId",
-                table: "EventUser1",
-                column: "AcceptedUsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupUser_UsersId",
-                table: "GroupUser",
+                name: "IX_GroupMember_UsersId",
+                table: "GroupMember",
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
@@ -330,9 +406,19 @@ namespace AlumniNetworkAPI.Migrations
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RSVP_EventId",
+                table: "RSVP",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TopicUser_UsersId",
                 table: "TopicUser",
                 column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserEvents_EventId",
+                table: "UserEvents",
+                column: "EventId");
         }
 
         /// <inheritdoc />
@@ -345,28 +431,31 @@ namespace AlumniNetworkAPI.Migrations
                 name: "EventTopic");
 
             migrationBuilder.DropTable(
-                name: "EventUser");
+                name: "EventUserInvitation");
 
             migrationBuilder.DropTable(
-                name: "EventUser1");
-
-            migrationBuilder.DropTable(
-                name: "GroupUser");
+                name: "GroupMember");
 
             migrationBuilder.DropTable(
                 name: "Posts");
 
             migrationBuilder.DropTable(
+                name: "RSVP");
+
+            migrationBuilder.DropTable(
                 name: "TopicUser");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "UserEvents");
 
             migrationBuilder.DropTable(
                 name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Topics");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Users");
