@@ -14,11 +14,11 @@ namespace AlumniNetworkAPI.Services.UserServices
 
         public async Task<User> GetUserAsync(string keycloakId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId);
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.KeycloakId == keycloakId);
 
             if(user == null)
             {
-                throw new Exception();
+                throw new Exception($"User with keycloakId: {keycloakId} not found");
             }
             return user;
         }

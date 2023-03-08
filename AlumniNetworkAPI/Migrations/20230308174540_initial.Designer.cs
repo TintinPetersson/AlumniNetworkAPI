@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlumniNetworkAPI.Migrations
 {
     [DbContext(typeof(AlumniNetworkDbContext))]
-    [Migration("20230307092627_Added_Seed_Data_User")]
-    partial class Added_Seed_Data_User
+    [Migration("20230308174540_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace AlumniNetworkAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Event", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,9 +60,44 @@ namespace AlumniNetworkAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AllowGuests = true,
+                            BannerImage = "Image",
+                            Description = "Bild.png",
+                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Webinar",
+                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AllowGuests = true,
+                            BannerImage = "Image",
+                            Description = "Bild.png",
+                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "AW",
+                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AllowGuests = true,
+                            BannerImage = "Image",
+                            Description = "Bild.png",
+                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Meet-up",
+                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Group", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +122,7 @@ namespace AlumniNetworkAPI.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Post", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,8 +135,7 @@ namespace AlumniNetworkAPI.Migrations
 
                     b.Property<string>("Body")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("EventId")
                         .HasColumnType("int");
@@ -117,6 +151,11 @@ namespace AlumniNetworkAPI.Migrations
 
                     b.Property<int?>("RecieverId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("TopicId")
                         .HasColumnType("int");
@@ -138,7 +177,7 @@ namespace AlumniNetworkAPI.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Topic", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Topic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +199,7 @@ namespace AlumniNetworkAPI.Migrations
                     b.ToTable("Topics");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.User", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,8 +215,10 @@ namespace AlumniNetworkAPI.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("KeycloakId")
-                        .HasColumnType("int");
+                    b.Property<string>("KeycloakId")
+                        .IsRequired()
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
                         .HasMaxLength(2147483647)
@@ -203,10 +244,50 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 1,
                             Bio = "Is from GBG",
                             FunFact = "Formula",
-                            KeycloakId = 1,
+                            KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb",
                             Picture = "Bild.png",
                             Status = "",
                             Username = "Filip"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Bio = "",
+                            FunFact = "Big Formula",
+                            KeycloakId = "f428f142-cae0-4429-b846-991c67fc4d4f",
+                            Picture = "",
+                            Status = "",
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Bio = "Karate",
+                            FunFact = "Artist",
+                            KeycloakId = "",
+                            Picture = "Bild3.png",
+                            Status = "",
+                            Username = "Maryam"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Bio = "Varberg",
+                            FunFact = ".NET utvecklare",
+                            KeycloakId = "",
+                            Picture = "Bild4.png",
+                            Status = "",
+                            Username = "TinTin"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Bio = "Älska, älska inte",
+                            FunFact = "Bestämd",
+                            KeycloakId = "",
+                            Picture = "Bild5.png",
+                            Status = "",
+                            Username = "Annika"
                         });
                 });
 
@@ -272,17 +353,64 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("RSVP", b =>
                 {
-                    b.Property<int>("AcceptedEventsId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AcceptedUsersId")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.HasKey("AcceptedEventsId", "AcceptedUsersId");
+                    b.HasKey("UserId", "EventId");
 
-                    b.HasIndex("AcceptedUsersId");
+                    b.HasIndex("EventId");
 
                     b.ToTable("RSVP");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            EventId = 1
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            EventId = 1
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            EventId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            EventId = 2
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            EventId = 2
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            EventId = 2
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            EventId = 3
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            EventId = 3
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            EventId = 3
+                        });
                 });
 
             modelBuilder.Entity("TopicUser", b =>
@@ -300,34 +428,96 @@ namespace AlumniNetworkAPI.Migrations
                     b.ToTable("TopicUser");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Post", b =>
+            modelBuilder.Entity("UserEvents", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.User", "Author")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "EventId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("UserEvents");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            EventId = 1
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            EventId = 1
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            EventId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            EventId = 2
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            EventId = 2
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            EventId = 2
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            EventId = 3
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            EventId = 3
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            EventId = 3
+                        });
+                });
+
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Post", b =>
+                {
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", "Author")
                         .WithMany("AuthoredPosts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.Event", "Event")
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Event", "Event")
                         .WithMany("Posts")
                         .HasForeignKey("EventId");
 
-                    b.HasOne("AlumniNetworkAPI.Models.Group", "Group")
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Group", "Group")
                         .WithMany("Posts")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("AlumniNetworkAPI.Models.Post", "ParentPost")
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Post", "ParentPost")
                         .WithMany("Replies")
                         .HasForeignKey("ParentPostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.User", "Reciever")
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", "Reciever")
                         .WithMany("RecievedPosts")
                         .HasForeignKey("RecieverId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("AlumniNetworkAPI.Models.Topic", "Topic")
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Topic", "Topic")
                         .WithMany("Posts")
                         .HasForeignKey("TopicId");
 
@@ -346,13 +536,13 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("EventGroup", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.Event", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Event", null)
                         .WithMany()
                         .HasForeignKey("EventsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.Group", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Group", null)
                         .WithMany()
                         .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -361,13 +551,13 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("EventTopic", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.Event", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Event", null)
                         .WithMany()
                         .HasForeignKey("EventsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.Topic", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Topic", null)
                         .WithMany()
                         .HasForeignKey("TopicsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -376,13 +566,13 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("EventUserInvitation", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.User", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("InvitedUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.Event", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Event", null)
                         .WithMany()
                         .HasForeignKey("UnrespondedEventsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -391,13 +581,13 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("GroupMember", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.Group", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Group", null)
                         .WithMany()
                         .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.User", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -406,55 +596,70 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("RSVP", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.Event", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Event", null)
                         .WithMany()
-                        .HasForeignKey("AcceptedEventsId")
+                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.User", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", null)
                         .WithMany()
-                        .HasForeignKey("AcceptedUsersId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("TopicUser", b =>
                 {
-                    b.HasOne("AlumniNetworkAPI.Models.Topic", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Topic", null)
                         .WithMany()
                         .HasForeignKey("TopicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlumniNetworkAPI.Models.User", null)
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Event", b =>
+            modelBuilder.Entity("UserEvents", b =>
+                {
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Event", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Group", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Group", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Post", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Post", b =>
                 {
                     b.Navigation("Replies");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.Topic", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Topic", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("AlumniNetworkAPI.Models.User", b =>
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.User", b =>
                 {
                     b.Navigation("AuthoredPosts");
 
