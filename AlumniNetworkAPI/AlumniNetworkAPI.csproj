@@ -18,12 +18,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\TopicServices\" />
-    <Folder Include="Services\GroupServices\" />
-    <Folder Include="Services\UserServices\" />
-    <Folder Include="Services\PostServices\" />
-    <Folder Include="Services\EventServices\" />
-  </ItemGroup>
-
 </Project>
