@@ -44,6 +44,14 @@ namespace AlumniNetworkAPI.Services.UserServices
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+        public async Task<User> PostAsync(string keycloakId, string username)
+        {
+            User user = new User { KeycloakId = keycloakId, Username = username, Status = "" };
+
+            _context.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
 
         private async Task<bool> UserExists(int id)
         {
