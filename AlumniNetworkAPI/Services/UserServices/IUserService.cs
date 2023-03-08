@@ -1,6 +1,11 @@
-﻿namespace AlumniNetworkAPI.Services.UserServices
+﻿using AlumniNetworkAPI.Models.Domain;
+
+namespace AlumniNetworkAPI.Services.UserServices
 {
-    public class IUserService
+    public interface IUserService
     {
+        Task<User> GetUserAsync(string keycloakId);
+        Task<User> GetUserByIdAsync(int id);
+        Task UpdateUserAsync(User user);
     }
 }
