@@ -7,5 +7,6 @@ namespace AlumniNetworkAPI.Services.UserServices
         Task<User> GetUserAsync(string keycloakId);
         Task<User> GetUserByIdAsync(int id);
         Task UpdateUserAsync(User user);
+        Task<User> PostAsync(string keycloakId, string username);
     }
 }

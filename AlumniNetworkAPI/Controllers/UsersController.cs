@@ -13,12 +13,13 @@ using System.Net.Mime;
 using AlumniNetworkAPI.Models.Dtos.Users;
 using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.CustomExceptions;
+using AlumniNetworkAPI.Dtos;
 
 namespace AlumniNetworkAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
@@ -48,7 +49,7 @@ namespace AlumniNetworkAPI.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        public async Task<ActionResult<UserReadDto>> GetUserById(int id)
         {
             try
             {
@@ -83,12 +84,29 @@ namespace AlumniNetworkAPI.Controllers
             }
         }
 
-        //// POST: api/Users
-        //[HttpPost]
-        //public async Task<ActionResult<User>> PostUser(User user)
-        //{
+        // POST: api/Users
+        [HttpPost]
+        public async Task<ActionResult<User>> PostUser()
+        {
 
-        //    return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        //}
+            var keycloakID = this.User.GetId();
+            var username = this.User.GetUsername();
+
+            if (keycloakID == null || username == null)
+            {
+                return NotFound();
+            }
+
+            if (_userService.GetUserAsync(keycloakID) != null)
+            {
+                return BadRequest();
+            }
+
+            User domainUser = await _userService.PostAsync(keycloakID, username);
+
+            return CreatedAtAction("GetÙser",
+                new { id = domainUser.Id },
+                _mapper.Map<UserReadDto>(domainUser));
+        }
     }
 }
