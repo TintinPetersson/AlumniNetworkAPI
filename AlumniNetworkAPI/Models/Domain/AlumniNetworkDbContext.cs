@@ -73,7 +73,7 @@ namespace AlumniNetworkAPI.Models.Domain
 
             modelBuilder.Entity<User>().HasData(
                 new User { Id = 1, KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb", Username = "Filip", Picture = "Bild.png", Status = "", Bio = "Is from GBG", FunFact = "Formula" },
-                new User { Id = 2, KeycloakId = "", Username = "Tommy", Picture = "Bild2.png", Status = "", Bio = "ya", FunFact = "Big Formula" },
+                new User { Id = 2, KeycloakId = "f428f142-cae0-4429-b846-991c67fc4d4f", Username = "Tommy", Picture = "Bild2.png", Status = "", Bio = "ya", FunFact = "Big Formula" },
                 new User { Id = 3, KeycloakId = "", Username = "Maryam", Picture = "Bild3.png", Status = "", Bio = "Karate", FunFact = "Artist" },
                 new User { Id = 4, KeycloakId = "", Username = "TinTin", Picture = "Bild4.png", Status = "", Bio = "Varberg", FunFact = ".NET utvecklare" },
                 new User { Id = 5, KeycloakId = "", Username = "Mikael", Picture = "Bild5.png", Status = "", Bio = "Jag älskar skövde", FunFact = "Bestämd" },
