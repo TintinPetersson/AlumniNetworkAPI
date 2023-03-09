@@ -17,7 +17,7 @@ using AlumniNetworkAPI.Dtos;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize]
     [Produces(MediaTypeNames.Application.Json)]
@@ -104,7 +104,7 @@ namespace AlumniNetworkAPI.Controllers
 
             User domainUser = await _userService.PostAsync(keycloakID, username);
 
-            return CreatedAtAction("GetÙser",
+            return CreatedAtAction("GetUser",
                 new { id = domainUser.Id },
                 _mapper.Map<UserReadDto>(domainUser));
         }
