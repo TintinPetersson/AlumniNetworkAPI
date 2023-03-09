@@ -39,12 +39,13 @@ namespace AlumniNetworkAPI.Controllers
         public async Task<ActionResult<UserReadDto>> GetUser()
         {
             string? keycloakId = this.User.GetId();
+            var username = this.User.GetUsername();
 
-            if(keycloakId == null)
+            if (keycloakId == null)
             {
                 return BadRequest();
             }
-            return Ok(_mapper.Map<UserReadDto>(await _userService.GetUserAsync(keycloakId)));
+            return Ok(_mapper.Map<UserReadDto>(await _userService.GetUserAsync(keycloakId, username)));
         }
 
         // GET: api/Users/5
@@ -82,31 +83,6 @@ namespace AlumniNetworkAPI.Controllers
                     Detail = ex.Message,
                 });
             }
-        }
-
-        // POST: api/Users
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser()
-        {
-
-            var keycloakID = this.User.GetId();
-            var username = this.User.GetUsername();
-
-            if (keycloakID == null || username == null)
-            {
-                return NotFound();
-            }
-
-            if (_userService.GetUserAsync(keycloakID) != null)
-            {
-                return BadRequest();
-            }
-
-            User domainUser = await _userService.PostAsync(keycloakID, username);
-
-            return CreatedAtAction("GetUser",
-                new { id = domainUser.Id },
-                _mapper.Map<UserReadDto>(domainUser));
         }
     }
 }

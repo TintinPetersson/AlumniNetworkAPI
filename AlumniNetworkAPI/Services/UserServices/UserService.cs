@@ -12,13 +12,13 @@ namespace AlumniNetworkAPI.Services.UserServices
             _context = context;
         }
 
-        public async Task<User> GetUserAsync(string keycloakId)
+        public async Task<User> GetUserAsync(string keycloakId, string username)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.KeycloakId == keycloakId);
 
             if(user == null)
             {
-                throw new Exception($"User with keycloakId: {keycloakId} not found");
+                return await PostAsync(keycloakId, username);
             }
             return user;
         }
@@ -48,9 +48,14 @@ namespace AlumniNetworkAPI.Services.UserServices
         {
             User user = new User { KeycloakId = keycloakId, Username = username, Status = "" };
 
-            _context.Add(user);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;
+        }
+
+        public async Task<bool> UserInDb(string keycloakId)
+        {
+            return await _context.Users.AnyAsync(c => c.KeycloakId == keycloakId);
         }
 
         private async Task<bool> UserExists(int id)
