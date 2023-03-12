@@ -14,6 +14,7 @@ using AlumniNetworkAPI.Models.Dtos.Users;
 using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Dtos;
+using AlumniNetworkAPI.Migrations;
 
 namespace AlumniNetworkAPI.Controllers
 {
@@ -41,7 +42,7 @@ namespace AlumniNetworkAPI.Controllers
             string? keycloakId = this.User.GetId();
             var username = this.User.GetUsername();
 
-            if (keycloakId == null)
+            if (keycloakId == null || username == null)
             {
                 return BadRequest();
             }
@@ -69,20 +70,20 @@ namespace AlumniNetworkAPI.Controllers
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserEditDto userDto)
+        public async Task<IActionResult> PutUser(int id, UserEditDto userInput)
         {
-            try
+            string keycloakId = this.User.GetId();
+            User userToPatch = _userService.getUserFromKeyCloak(keycloakId);
+
+            if (userToPatch.Id != id)
             {
-                await _userService.UpdateUserAsync(_mapper.Map<User>(userDto));
-                return NoContent();
+                return BadRequest();
             }
-            catch (UserNotFoundException ex)
-            {
-                return NotFound(new ProblemDetails
-                {
-                    Detail = ex.Message,
-                });
-            }
+
+            User patchUser = _mapper.Map<User>(userInput);
+            await _userService.UpdateUserAsync(patchUser, userToPatch);
+
+            return Ok(patchUser);
         }
     }
 }

@@ -52,7 +52,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 //builder.Services.AddScoped(typeof(ITopicService), typeof(TopicService));
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 //builder.Services.AddScoped(typeof(IGroupService), typeof(GroupService));
-//builder.Services.AddScoped(typeof(IPostService), typeof(PostService));
+builder.Services.AddScoped(typeof(IPostService), typeof(PostService));
 //builder.Services.AddScoped(typeof(IEventService), typeof(EventService));
 
 builder.Services.AddDbContext<AlumniNetworkDbContext>(
