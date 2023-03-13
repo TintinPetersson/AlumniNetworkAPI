@@ -14,7 +14,6 @@ using AlumniNetworkAPI.Models.Dtos.Users;
 using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Dtos;
-using AlumniNetworkAPI.Migrations;
 
 namespace AlumniNetworkAPI.Controllers
 {
