@@ -31,5 +31,6 @@ namespace AlumniNetworkAPI.Models.Domain
         //One-to-many
         public virtual ICollection<Post>? AuthoredPosts { get; set; }
         public virtual ICollection<Post>? RecievedPosts { get; set; }
+        public ICollection<Event>? AuthoredEvents { get; set; } //One-Many
     }
 }

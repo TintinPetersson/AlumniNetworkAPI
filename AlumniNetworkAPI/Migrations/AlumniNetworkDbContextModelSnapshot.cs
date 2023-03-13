@@ -33,6 +33,9 @@ namespace AlumniNetworkAPI.Migrations
                     b.Property<bool>("AllowGuests")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("BannerImage")
                         .HasColumnType("nvarchar(max)");
 
@@ -55,6 +58,8 @@ namespace AlumniNetworkAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Events");
 
@@ -166,7 +171,7 @@ namespace AlumniNetworkAPI.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ParentPostId")
+                    b.Property<int?>("ParentPostId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RecieverId")
@@ -195,6 +200,35 @@ namespace AlumniNetworkAPI.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Posts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AuthorId = 1,
+                            Body = "Hejsan svejsan",
+                            LastUpdated = new DateTime(2023, 3, 13, 13, 51, 2, 330, DateTimeKind.Local).AddTicks(6940),
+                            Title = "Maryams Dagbok",
+                            TopicId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AuthorId = 2,
+                            Body = "Svejsan Hejsan",
+                            LastUpdated = new DateTime(2023, 3, 13, 13, 51, 2, 330, DateTimeKind.Local).AddTicks(6983),
+                            Title = "Maryams Ica Lista",
+                            TopicId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AuthorId = 3,
+                            Body = "Hej svej",
+                            LastUpdated = new DateTime(2023, 3, 13, 13, 51, 2, 330, DateTimeKind.Local).AddTicks(6985),
+                            Title = "Maryams Hemliga bok",
+                            TopicId = 1
+                        });
                 });
 
             modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Topic", b =>
@@ -373,32 +407,61 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("EventGroup", b =>
                 {
-                    b.Property<int>("EventsId")
-                        .HasColumnType("int");
-
                     b.Property<int>("GroupsId")
                         .HasColumnType("int");
 
-                    b.HasKey("EventsId", "GroupsId");
+                    b.Property<int>("EventsId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("GroupsId");
+                    b.HasKey("GroupsId", "EventsId");
+
+                    b.HasIndex("EventsId");
 
                     b.ToTable("EventGroup");
+
+                    b.HasData(
+                        new
+                        {
+                            GroupsId = 1,
+                            EventsId = 1
+                        },
+                        new
+                        {
+                            GroupsId = 2,
+                            EventsId = 2
+                        },
+                        new
+                        {
+                            GroupsId = 3,
+                            EventsId = 3
+                        });
                 });
 
             modelBuilder.Entity("EventTopic", b =>
                 {
-                    b.Property<int>("EventsId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TopicsId")
                         .HasColumnType("int");
 
-                    b.HasKey("EventsId", "TopicsId");
+                    b.Property<int>("EventsId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("TopicsId");
+                    b.HasKey("TopicsId", "EventsId");
+
+                    b.HasIndex("EventsId");
 
                     b.ToTable("EventTopic");
+
+                    b.HasData(
+                        new
+                        {
+                            TopicsId = 2,
+                            EventsId = 1
+                        },
+                        new
+                        {
+                            TopicsId = 2,
+                            EventsId = 3
+                        });
                 });
 
             modelBuilder.Entity("EventUserInvitation", b =>
@@ -669,6 +732,16 @@ namespace AlumniNetworkAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Event", b =>
+                {
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.User", "Author")
+                        .WithMany("AuthoredEvents")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.Post", b =>
                 {
                     b.HasOne("AlumniNetworkAPI.Models.Domain.User", "Author")
@@ -688,8 +761,7 @@ namespace AlumniNetworkAPI.Migrations
                     b.HasOne("AlumniNetworkAPI.Models.Domain.Post", "ParentPost")
                         .WithMany("Replies")
                         .HasForeignKey("ParentPostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("AlumniNetworkAPI.Models.Domain.User", "Reciever")
                         .WithMany("RecievedPosts")
@@ -840,6 +912,8 @@ namespace AlumniNetworkAPI.Migrations
 
             modelBuilder.Entity("AlumniNetworkAPI.Models.Domain.User", b =>
                 {
+                    b.Navigation("AuthoredEvents");
+
                     b.Navigation("AuthoredPosts");
 
                     b.Navigation("RecievedPosts");

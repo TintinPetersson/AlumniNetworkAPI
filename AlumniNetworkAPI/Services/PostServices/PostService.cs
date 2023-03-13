@@ -1,6 +1,6 @@
-﻿using AlumniNetworkAPI.Migrations;
-using AlumniNetworkAPI.Models.Domain;
+﻿using AlumniNetworkAPI.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace AlumniNetworkAPI.Services.PostServices
 {
@@ -27,14 +27,75 @@ namespace AlumniNetworkAPI.Services.PostServices
                 .ThenBy(c => c.LastUpdated.TimeOfDay)
                 .ToListAsync();
         }
-        public async Task<Post> GetPostByIdAsync(int id)
+        public async Task<IEnumerable<Post>> GetMessagesAsync(string keycloakId)
         {
-            throw new NotImplementedException();
+            User user = _context.Users.First(u => u.KeycloakId == keycloakId);
+
+            return await _context.Posts
+                .Where(c => c.RecieverId == user.Id)
+                .OrderByDescending(c => c.LastUpdated.Date)
+                .ThenBy(c => c.LastUpdated.TimeOfDay)
+                .ToListAsync();
         }
+        public async Task<IEnumerable<Post>> GetPostByIdAsync(int id, string keycloakId)
+        {
+            User user = _context.Users.First(u => u.KeycloakId == keycloakId);
+
+            return await _context.Posts
+                .Where(c => c.RecieverId == user.Id && c.AuthorId == id)
+                .OrderByDescending(c => c.LastUpdated.Date)
+                .ThenBy(c => c.LastUpdated.TimeOfDay)
+                .ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<Post>> GetGroupPosts(int groupId)
+        {
+            return await _context.Posts
+                .Include(c => c.Group)
+                .Include(c => c.Topic)
+                .Include(c => c.Author)
+                .Include(c => c.Replies).ThenInclude(x => x.Author)
+                .Where(c => c.GroupId == groupId)
+                .Where(c => c.ParentPostId == null)
+                .OrderByDescending(c => c.LastUpdated.Date)
+                .ThenBy(c => c.LastUpdated.TimeOfDay)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Post>> GetTopicPosts(int topicId)
+        {
+            return await _context.Posts
+                .Include(c => c.Group)
+                .Include(c => c.Topic)
+                .Include(c => c.Author)
+                .Include(c => c.Replies).ThenInclude(x => x.Author)
+                .Where(c => c.TopicId == topicId)
+                .Where(c => c.ParentPostId == null)
+                .OrderByDescending(c => c.LastUpdated.Date)
+                .ThenBy(c => c.LastUpdated.TimeOfDay)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Post>> GetEventPosts(int eventId)
+        {
+            return await _context.Posts
+                .Include(c => c.Group)
+                .Include(c => c.Topic)
+                .Include(c => c.Author)
+                .Include(c => c.Replies).ThenInclude(x => x.Author)
+                .Where(c => c.EventId == eventId)
+                .Where(c => c.ParentPostId == null)
+                .OrderByDescending(c => c.LastUpdated.Date)
+                .ThenBy(c => c.LastUpdated.TimeOfDay)
+                .ToListAsync();
+        }
+
         public async Task UpdatePostAsync(Post post)
         {
-            throw new NotImplementedException();
+            post.LastUpdated = DateTime.Now;
+            _context.Entry(post).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
+
         public async Task<Post> AddPostAsync(Post domainPost, string keycloakId)
         {
             User user = _context.Users
@@ -87,5 +148,7 @@ namespace AlumniNetworkAPI.Services.PostServices
             await _context.SaveChangesAsync();
             return domainPost;
         }
+
+        
     }
 }

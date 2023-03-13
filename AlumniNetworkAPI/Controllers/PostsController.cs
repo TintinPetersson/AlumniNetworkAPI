@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Mime;
 using AlumniNetworkAPI.Services.PostServices;
+using Newtonsoft.Json;
 
 namespace AlumniNetworkAPI.Controllers
 {
@@ -41,15 +42,86 @@ namespace AlumniNetworkAPI.Controllers
             return _mapper.Map<List<PostReadDto>>(await _postService.GetPostsAsync(keycloakId));
         }
 
+        // GET: api/posts/user
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<ActionResult<IEnumerable<PostReadDto>>> GetRecievedPosts()
+        {
+            var keycloakId = this.User.GetId();
+
+            if (keycloakId == null)
+            {
+                return BadRequest();
+            }
+
+            return _mapper.Map<List<PostReadDto>>(await _postService.GetMessagesAsync(keycloakId));
+        }
+
         // GET: api/Posts/5
-        [HttpGet("{id}")]
+        [HttpGet("user/{id}")]
         public async Task<ActionResult<PostReadDto>> GetPostById(int id)
         {
             try
             {
-                Post post = await _postService.GetPostByIdAsync(id);
-                var postDto = _mapper.Map<PostReadDto>(post);
+                string? keycloakId = this.User.GetId();
+
+                if (keycloakId == null)
+                {
+                    return BadRequest();
+                }
+
+                var posts = await _postService.GetPostByIdAsync(id, keycloakId);
+                var postDto = _mapper.Map<PostReadDto>(posts);
                 return Ok(postDto);
+            }
+            catch (PostNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message,
+                });
+            }
+        }
+        // GET: api/Posts/5
+        [HttpGet("group/{id}")]
+        public async Task<ActionResult<IEnumerable<PostReadDto>>> GetGroupPosts(int id)
+        {
+            try
+            {
+                return _mapper.Map<List<PostReadDto>>(await _postService.GetGroupPosts(id));
+            }
+            catch (PostNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message,
+                });
+            }
+        }
+        // GET: api/Posts/5
+        [HttpGet("event/{id}")]
+        public async Task<ActionResult<IEnumerable<PostReadDto>>> GetEventPosts(int id)
+        {
+            try
+            {
+                return _mapper.Map<List<PostReadDto>>(await _postService.GetEventPosts(id));
+            }
+            catch (PostNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message,
+                });
+            }
+        }
+
+        // GET: api/Posts/5
+        [HttpGet("topic/{id}")]
+        public async Task<ActionResult<IEnumerable<PostReadDto>>> GetTopicPosts(int id)
+        {
+            try
+            {
+                return _mapper.Map<List<PostReadDto>>(await _postService.GetTopicPosts(id));
             }
             catch (PostNotFoundException ex)
             {
@@ -64,6 +136,11 @@ namespace AlumniNetworkAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPost(int id, PostEditDto postDto)
         {
+            if (id != postDto.Id)
+            {
+                return BadRequest();
+            }
+
             try
             {
                 await _postService.UpdatePostAsync(_mapper.Map<Post>(postDto));

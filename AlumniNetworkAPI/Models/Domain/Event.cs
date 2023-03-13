@@ -22,5 +22,7 @@ namespace AlumniNetworkAPI.Models.Domain
         public virtual ICollection<User>? InvitedUsers { get; set; } //Many-to-many
         public virtual ICollection<User>? AcceptedUsers { get; set; } //Many-to-many
         public virtual ICollection<Topic>? Topics { get; set; } //Many-to-many
+        public int? AuthorId { get; set; }
+        public User? Author { get; set; } //One-Many
     }
 }

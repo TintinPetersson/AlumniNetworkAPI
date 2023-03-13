@@ -27,7 +27,7 @@ namespace AlumniNetworkAPI.Models.Domain
         public virtual int? EventId { get; set; }
         public virtual Event? Event { get; set; }
 
-        public virtual int ParentPostId { get; set; }
+        public virtual int? ParentPostId { get; set; }
         public virtual Post? ParentPost { get; set; }
 
         public virtual ICollection<Post>? Replies { get; set; }
