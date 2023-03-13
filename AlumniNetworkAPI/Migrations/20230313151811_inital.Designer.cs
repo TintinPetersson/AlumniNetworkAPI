@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlumniNetworkAPI.Migrations
 {
     [DbContext(typeof(AlumniNetworkDbContext))]
-    [Migration("20230313125102_initial")]
-    partial class initial
+    [Migration("20230313151811_inital")]
+    partial class inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -210,7 +210,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 1,
                             AuthorId = 1,
                             Body = "Hejsan svejsan",
-                            LastUpdated = new DateTime(2023, 3, 13, 13, 51, 2, 330, DateTimeKind.Local).AddTicks(6940),
+                            LastUpdated = new DateTime(2023, 3, 13, 16, 18, 11, 629, DateTimeKind.Local).AddTicks(6573),
                             Title = "Maryams Dagbok",
                             TopicId = 1
                         },
@@ -219,7 +219,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 2,
                             AuthorId = 2,
                             Body = "Svejsan Hejsan",
-                            LastUpdated = new DateTime(2023, 3, 13, 13, 51, 2, 330, DateTimeKind.Local).AddTicks(6983),
+                            LastUpdated = new DateTime(2023, 3, 13, 16, 18, 11, 629, DateTimeKind.Local).AddTicks(6617),
                             Title = "Maryams Ica Lista",
                             TopicId = 2
                         },
@@ -228,7 +228,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 3,
                             AuthorId = 3,
                             Body = "Hej svej",
-                            LastUpdated = new DateTime(2023, 3, 13, 13, 51, 2, 330, DateTimeKind.Local).AddTicks(6985),
+                            LastUpdated = new DateTime(2023, 3, 13, 16, 18, 11, 629, DateTimeKind.Local).AddTicks(6620),
                             Title = "Maryams Hemliga bok",
                             TopicId = 1
                         });
