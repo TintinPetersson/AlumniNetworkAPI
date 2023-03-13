@@ -139,6 +139,35 @@ namespace AlumniNetworkAPI.Models.Domain
                             new { UserId = 5, GroupId = 3 }
                             );
                     });
+
+            modelBuilder.Entity<Topic>().HasData(
+            new Topic { Id = 1, Name = "Keycloak", Description = "Keycloak is an open source software product to allow single sign-on with Identity" },
+            new Topic { Id = 2, Name = "JavaScript", Description = "JavaScript is a high-level, often just-in-time compiled language that conforms to the ECMAScript standard." },
+            new Topic { Id = 3, Name = "Tailwind", Description = "Tailwind CSS is an open source CSS framework." }
+            );
+
+            modelBuilder.Entity<User>()
+              .HasMany(u => u.Topics)
+              .WithMany(e => e.Users)
+              .UsingEntity<Dictionary<string, object>>(
+              "TopicUser",
+              e => e.HasOne<Topic>().WithMany().HasForeignKey("TopicId")!,
+              e => e.HasOne<User>().WithMany().HasForeignKey("UserId"),
+              joinEntity =>
+              {
+                  joinEntity.HasKey("UserId", "TopicId");
+                  joinEntity.HasData(
+                  new { UserId = 1, TopicId = 1 },
+                  new { UserId = 5, TopicId = 1 },
+                  new { UserId = 4, TopicId = 1 },
+                  new { UserId = 2, TopicId = 2 },
+                  new { UserId = 8, TopicId = 2 },
+                  new { UserId = 4, TopicId = 2 },
+                  new { UserId = 5, TopicId = 3 },
+                  new { UserId = 7, TopicId = 3 },
+                  new { UserId = 8, TopicId = 3 }
+                  );
+              });
         }
     }
 }
