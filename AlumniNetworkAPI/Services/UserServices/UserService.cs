@@ -1,6 +1,8 @@
 ﻿using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Models.Dtos.Users;
 using Microsoft.EntityFrameworkCore;
+using AlumniNetworkAPI.Helpers;
 
 namespace AlumniNetworkAPI.Services.UserServices
 {
@@ -35,15 +37,34 @@ namespace AlumniNetworkAPI.Services.UserServices
             return user;
         }
 
-        public async Task UpdateUserAsync(User user)
+
+        public async Task UpdateUserAsync(User patchUser, User userToPatch)
         {
-            if (!await UserExists(user.Id))
+            if (patchUser.Username != null)
             {
-                throw new UserNotFoundException(user.Id);
+                userToPatch.Username = patchUser.Username;
             }
-            _context.Entry(user).State = EntityState.Modified;
+            if (patchUser.Status != null)
+            {
+                userToPatch.Status = patchUser.Status;
+            }
+            if (patchUser.Bio != null)
+            {
+                userToPatch.Bio = patchUser.Bio;
+            }
+            if (patchUser.FunFact != null)
+            {
+                userToPatch.FunFact = patchUser.FunFact;
+            }
+            if (patchUser.Picture != null)
+            {
+                userToPatch.Picture = patchUser.Picture;
+            }
+            _context.Entry(userToPatch).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
         }
+
         public async Task<User> PostAsync(string keycloakId, string username)
         {
             User user = new User { KeycloakId = keycloakId, Username = username, Status = "" };
@@ -58,9 +79,10 @@ namespace AlumniNetworkAPI.Services.UserServices
             return await _context.Users.AnyAsync(c => c.KeycloakId == keycloakId);
         }
 
-        private async Task<bool> UserExists(int id)
+        public User getUserFromKeyCloak(string keycloakId)
         {
-            return await _context.Users.AnyAsync(c => c.Id == id);
+            User user = _context.Users.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId).Result;
+            return user;
         }
     }
 }
