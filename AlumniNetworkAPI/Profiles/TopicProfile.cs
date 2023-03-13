@@ -1,6 +1,5 @@
 ﻿using AlumniNetworkAPI.Models.Domain;
 using AlumniNetworkAPI.Models.Dtos.Topics;
-using AlumniNetworkAPI.Models.Dtos.Users;
 using AutoMapper;
 
 namespace AlumniNetworkAPI.Profiles

@@ -14,5 +14,6 @@ namespace AlumniNetworkAPI.Models.Domain
         public virtual ICollection<Event>? Events { get; set; }
         public virtual ICollection<User>? Users { get; set; }
         public virtual ICollection<Post>? Posts { get; set; }
+
     }
 }

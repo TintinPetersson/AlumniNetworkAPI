@@ -1,107 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using AlumniNetworkAPI.Services.TopicServices;
+using AlumniNetworkAPI.Helpers;
+using AlumniNetworkAPI.Models.Dtos.Topics;
+using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Models.Domain;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class TopicsController : ControllerBase
     {
-        private readonly AlumniNetworkDbContext _context;
+        private readonly ITopicService _topicService;
+        private readonly IMapper _mapper;
 
-        public TopicsController(AlumniNetworkDbContext context)
+        public TopicsController(IMapper mapper, ITopicService topicService)
         {
-            _context = context;
+            _mapper = mapper;
+            _topicService = topicService;
         }
 
-        // GET: api/Topics
+
+        // GET: api/v1/Topics
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Topic>>> GetTopics()
+        public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopics()
         {
-            return await _context.Topics.ToListAsync();
-        }
+            string? keycloakId = this.User.GetId();
 
-        // GET: api/Topics/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Topic>> GetTopic(int id)
-        {
-            var topic = await _context.Topics.FindAsync(id);
-
-            if (topic == null)
-            {
-                return NotFound();
-            }
-
-            return topic;
-        }
-
-        // PUT: api/Topics/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTopic(int id, Topic topic)
-        {
-            if (id != topic.Id)
+            if (keycloakId == null)
             {
                 return BadRequest();
             }
-
-            _context.Entry(topic).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TopicExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsAsync(keycloakId));
         }
 
-        // POST: api/Topics
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Topic>> PostTopic(Topic topic)
+        // GET: api/v1/Topics/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopicsById(int id)
         {
-            _context.Topics.Add(topic);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTopic", new { id = topic.Id }, topic);
-        }
-
-        // DELETE: api/Topics/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTopic(int id)
-        {
-            var topic = await _context.Topics.FindAsync(id);
-            if (topic == null)
+            if (_mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id)) != null)
             {
-                return NotFound();
+                Console.WriteLine(_mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id))); // [TODO]: Fix so it throws a error
+                return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id));
             }
-
-            _context.Topics.Remove(topic);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool TopicExists(int id)
-        {
-            return _context.Topics.Any(e => e.Id == id);
+            
+            else
+                throw new TopicNotFoundException(id); 
+        
         }
     }
 }

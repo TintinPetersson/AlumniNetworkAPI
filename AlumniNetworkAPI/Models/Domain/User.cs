@@ -28,9 +28,10 @@ namespace AlumniNetworkAPI.Models.Domain
         public virtual ICollection<Group>? Groups { get; set; }
         public virtual ICollection<Event>? AcceptedEvents { get; set; }
         public virtual ICollection<Event>? UnrespondedEvents { get; set; }
+
         //One-to-many
         public virtual ICollection<Post>? AuthoredPosts { get; set; }
         public virtual ICollection<Post>? RecievedPosts { get; set; }
-        public ICollection<Event>? AuthoredEvents { get; set; } //One-Many
+        public ICollection<Event>? AuthoredEvents { get; set; }
     }
 }
