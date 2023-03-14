@@ -5,12 +5,12 @@ using System.Net.Mime;
 using AlumniNetworkAPI.Services.TopicServices;
 using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.Models.Dtos.Topics;
-using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/topic")]
     [ApiController]
     [Authorize]
     [Produces(MediaTypeNames.Application.Json)]
@@ -27,33 +27,70 @@ namespace AlumniNetworkAPI.Controllers
             _topicService = topicService;
         }
 
-
         // GET: api/v1/Topics
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopics()
         {
-            string? keycloakId = this.User.GetId();
-
-            if (keycloakId == null)
-            {
-                return BadRequest();
-            }
-            return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsAsync(keycloakId));
+            return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsAsync());
         }
 
         // GET: api/v1/Topics/id
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopicsById(int id)
         {
-            if (_mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id)) != null)
-            {
-                Console.WriteLine(_mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id))); // [TODO]: Fix so it throws a error
-                return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id));
-            }
-            
-            else
-                throw new TopicNotFoundException(id); 
-        
+            //if (_topicService.GetTopicsByIdAsync(id) != null) // Check if id is valid and if not return topic with id not found!
+            //{
+            return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id));
+            //}
+            //else
+            //    return BadRequest($"No topic with {id} is found");
         }
+
+        // POST: api/v1/Topics
+        [HttpPost]
+        public async Task<ActionResult<Topic>> AddTopic(TopicCreateDto topic)
+        {
+            string keycloakId = this.User.GetId();
+            Topic newTopic = _mapper.Map<Topic>(topic);
+            try
+            {
+                newTopic = await _topicService.AddTopicAsync(newTopic, keycloakId);
+                return CreatedAtAction("GetTopics", new { id = newTopic.Id }, _mapper.Map<TopicReadDto>(newTopic));
+            }
+            catch (KeyNotFoundException)
+            {
+                return BadRequest("Invalid audience");
+            }
+            catch (Exception)
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpPost]
+        [Route("topic/{topicId}/join")]
+        public async Task<IActionResult> AddTopicUsers(int topicId)
+        {
+            string keycloakId = this.User.GetId();
+
+            try
+            {
+                await _topicService.AddTopicMembershipAsync(topicId, keycloakId);
+                return Ok($"Subscribed user to topic");
+            }
+            catch (KeyNotFoundException)
+            {
+                return BadRequest("Invalid audience");
+            }
+            catch (ArgumentException ex)
+            {
+                return Conflict("User is already a member of this topic.");
+            }
+            catch (Exception)
+            {
+                return Forbid();
+            }
+        }
+
     }
 }
