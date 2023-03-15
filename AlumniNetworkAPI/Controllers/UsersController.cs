@@ -82,7 +82,7 @@ namespace AlumniNetworkAPI.Controllers
             User patchUser = _mapper.Map<User>(userInput);
             await _userService.UpdateUserAsync(patchUser, userToPatch);
 
-            return Ok(patchUser);
+            return Ok(userToPatch);
         }
     }
 }
