@@ -1,5 +1,7 @@
 ﻿using AlumniNetworkAPI.Models.Domain;
-using System.ComponentModel.DataAnnotations;
+using AlumniNetworkAPI.Models.Dtos.Events;
+using AlumniNetworkAPI.Models.Dtos.Posts;
+using AlumniNetworkAPI.Models.Dtos.Users;
 
 namespace AlumniNetworkAPI.Models.Dtos.Groups
 {
@@ -10,8 +12,8 @@ namespace AlumniNetworkAPI.Models.Dtos.Groups
         public string? Description { get; set; }
         public bool IsPrivate { get; set; }
 
-        public virtual ICollection<Event>? Events { get; set; } //Many-to-many
-        public virtual ICollection<Post>? Posts { get; set; } //One-to-many
-        public virtual ICollection<User>? Users { get; set; } //Many-to-many
+        public virtual ICollection<EventReadDto>? Events { get; set; } //Many-to-many
+        public virtual ICollection<PostReadDto>? Posts { get; set; } //One-to-many
+        public virtual ICollection<UserReadDto>? Users { get; set; } //Many-to-many
     }
 }

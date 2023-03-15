@@ -25,7 +25,6 @@ public class TopicService : ITopicService
     public async Task<Topic> AddTopicAsync(Topic newTopic, string keycloakId)
     {
         User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
-
         var users = new List<User>
         {
             user
@@ -36,7 +35,7 @@ public class TopicService : ITopicService
         return newTopic;
 
     }
-    public async Task AddTopicMembershipAsync(int topicId, string keycloakId)
+    public async Task AddUserToTopicAsync(int topicId, string keycloakId)
     {
         var topic = await _context.Topics.Include(t => t.Users).FirstOrDefaultAsync(t => t.Id == topicId);
         if (topic == null)
