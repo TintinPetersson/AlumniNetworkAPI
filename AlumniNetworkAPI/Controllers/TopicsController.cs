@@ -38,12 +38,9 @@ namespace AlumniNetworkAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopicsById(int id)
         {
-            //if (_topicService.GetTopicsByIdAsync(id) != null) // Check if id is valid and if not return topic with id not found!
-            //{
+            //Check if id is valid and if not return topic with id not found!
             return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id));
-            //}
-            //else
-            //    return BadRequest($"No topic with {id} is found");
+
         }
 
         // POST: api/v1/Topics
@@ -61,21 +58,21 @@ namespace AlumniNetworkAPI.Controllers
             {
                 return BadRequest("Invalid audience");
             }
-            catch (Exception)
+            catch (Exception ex) 
             {
-                return Forbid();
+                return Forbid(ex.Message);
             }
         }
 
         [HttpPost]
-        [Route("topic/{topicId}/join")]
+        [Route("{topicId}/join")]
         public async Task<IActionResult> AddTopicUsers(int topicId)
         {
             string keycloakId = this.User.GetId();
 
             try
             {
-                await _topicService.AddTopicMembershipAsync(topicId, keycloakId);
+                await _topicService.AddUserToTopicAsync(topicId, keycloakId);
                 return Ok($"Subscribed user to topic");
             }
             catch (KeyNotFoundException)
@@ -84,11 +81,11 @@ namespace AlumniNetworkAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return Conflict("User is already a member of this topic.");
+                return Conflict(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Forbid();
+                return Forbid(ex.Message);
             }
         }
 

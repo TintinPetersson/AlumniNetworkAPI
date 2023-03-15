@@ -142,8 +142,22 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             Id = 3,
                             Description = "Mikael and Erik",
-                            IsPrivate = true,
+                            IsPrivate = false,
                             Name = "Skövde-group"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Experis GBG",
+                            IsPrivate = true,
+                            Name = "GbG-group"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Skåne",
+                            IsPrivate = false,
+                            Name = "Varberg-group"
                         });
                 });
 
@@ -207,7 +221,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 1,
                             AuthorId = 1,
                             Body = "Hejsan svejsan",
-                            LastUpdated = new DateTime(2023, 3, 13, 16, 18, 11, 629, DateTimeKind.Local).AddTicks(6573),
+                            LastUpdated = new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4155),
                             Title = "Maryams Dagbok",
                             TopicId = 1
                         },
@@ -216,7 +230,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 2,
                             AuthorId = 2,
                             Body = "Svejsan Hejsan",
-                            LastUpdated = new DateTime(2023, 3, 13, 16, 18, 11, 629, DateTimeKind.Local).AddTicks(6617),
+                            LastUpdated = new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4193),
                             Title = "Maryams Ica Lista",
                             TopicId = 2
                         },
@@ -225,7 +239,7 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 3,
                             AuthorId = 3,
                             Body = "Hej svej",
-                            LastUpdated = new DateTime(2023, 3, 13, 16, 18, 11, 629, DateTimeKind.Local).AddTicks(6620),
+                            LastUpdated = new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4195),
                             Title = "Maryams Hemliga bok",
                             TopicId = 1
                         });
@@ -527,7 +541,7 @@ namespace AlumniNetworkAPI.Migrations
                         new
                         {
                             GroupId = 2,
-                            UserId = 7
+                            UserId = 1
                         },
                         new
                         {
@@ -543,6 +557,16 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             GroupId = 3,
                             UserId = 5
+                        },
+                        new
+                        {
+                            GroupId = 4,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            GroupId = 5,
+                            UserId = 2
                         });
                 });
 

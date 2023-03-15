@@ -46,7 +46,9 @@ namespace AlumniNetworkAPI.Models.Domain
             modelBuilder.Entity<Group>().HasData(
                 new Group { Id = 1, Name = ".Net", Description = "ASP.NET", IsPrivate = true },
                 new Group { Id = 2, Name = "Java", Description = "Java and Javascript", IsPrivate = true },
-                new Group { Id = 3, Name = "Skövde-group", Description = "Mikael and Erik", IsPrivate = true }
+                new Group { Id = 3, Name = "Skövde-group", Description = "Mikael and Erik", IsPrivate = false },
+                new Group { Id = 4, Name = "GbG-group", Description = "Experis GBG", IsPrivate = true },
+                new Group { Id = 5, Name = "Varberg-group", Description = "Skåne", IsPrivate = false }
             );
 
             modelBuilder.Entity<Event>().HasData(
@@ -152,11 +154,15 @@ namespace AlumniNetworkAPI.Models.Domain
                             new { UserId = 6, GroupId = 1 },
                             new { UserId = 5, GroupId = 1 },
 
-                            new { UserId = 7, GroupId = 2 },
+                            new { UserId = 1, GroupId = 2 },
                             new { UserId = 8, GroupId = 2 },
 
                             new { UserId = 6, GroupId = 3 },
-                            new { UserId = 5, GroupId = 3 }
+                            new { UserId = 5, GroupId = 3 },
+
+                            new { UserId = 2, GroupId = 4 },
+
+                            new { UserId = 2, GroupId = 5 }
                             );
                     });
 

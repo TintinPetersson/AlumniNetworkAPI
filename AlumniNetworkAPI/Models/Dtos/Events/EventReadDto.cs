@@ -1,4 +1,8 @@
 ﻿using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Models.Dtos.Groups;
+using AlumniNetworkAPI.Models.Dtos.Posts;
+using AlumniNetworkAPI.Models.Dtos.Topics;
+using AlumniNetworkAPI.Models.Dtos.Users;
 using System.ComponentModel.DataAnnotations;
 
 namespace AlumniNetworkAPI.Models.Dtos.Events
@@ -14,10 +18,10 @@ namespace AlumniNetworkAPI.Models.Dtos.Events
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<Post>? Posts { get; set; } //One-to-many
-        public virtual ICollection<Group>? Groups { get; set; } //Many-to-many
-        public virtual ICollection<User>? InvitedUsers { get; set; } //Many-to-many
-        public virtual ICollection<User>? AcceptedUsers { get; set; } //Many-to-many
-        public virtual ICollection<Topic>? Topics { get; set; } //Many-to-many
+        public virtual ICollection<PostReadDto>? Posts { get; set; } //One-to-many
+        public virtual ICollection<GroupReadDto>? Groups { get; set; } //Many-to-many
+        public virtual ICollection<UserReadDto>? InvitedUsers { get; set; } //Many-to-many
+        public virtual ICollection<UserReadDto>? AcceptedUsers { get; set; } //Many-to-many
+        public virtual ICollection<TopicReadDto>? Topics { get; set; } //Many-to-many
     }
 }

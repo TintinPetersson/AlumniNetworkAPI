@@ -1,4 +1,8 @@
 ﻿using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Models.Dtos.Events;
+using AlumniNetworkAPI.Models.Dtos.Groups;
+using AlumniNetworkAPI.Models.Dtos.Posts;
+using AlumniNetworkAPI.Models.Dtos.Topics;
 
 namespace AlumniNetworkAPI.Models.Dtos.Users
 {
@@ -11,11 +15,11 @@ namespace AlumniNetworkAPI.Models.Dtos.Users
         public string? Bio { get; set; }
         public string? FunFact { get; set; }
 
-        public virtual ICollection<Topic>? Topics { get; set; }
-        public virtual ICollection<Group>? Groups { get; set; }
-        public virtual ICollection<Event>? AcceptedEvents { get; set; }
-        public virtual ICollection<Event>? UnrespondedEvents { get; set; }
-        public virtual ICollection<Post>? AuthoredPosts { get; set; }
-        public virtual ICollection<Post>? RecievedPosts { get; set; }
+        public virtual ICollection<TopicReadDto>? Topics { get; set; }
+        public virtual ICollection<GroupReadDto>? Groups { get; set; }
+        public virtual ICollection<EventReadDto>? AcceptedEvents { get; set; }
+        public virtual ICollection<EventReadDto>? UnrespondedEvents { get; set; }
+        public virtual ICollection<PostReadDto>? AuthoredPosts { get; set; }
+        public virtual ICollection<PostReadDto>? RecievedPosts { get; set; }
     }
 }

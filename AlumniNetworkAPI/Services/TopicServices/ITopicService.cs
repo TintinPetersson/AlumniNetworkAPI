@@ -7,6 +7,6 @@ namespace AlumniNetworkAPI.Services.TopicServices
         Task<IEnumerable<Topic>> GetTopicsAsync();
         Task<IEnumerable<Topic>> GetTopicsByIdAsync(int id);
         Task<Topic> AddTopicAsync(Topic newTopic, string keycloakId);
-        Task AddTopicMembershipAsync(int topicId, string userId);
+        Task AddUserToTopicAsync(int topicId, string keycloakId);
     }
 }

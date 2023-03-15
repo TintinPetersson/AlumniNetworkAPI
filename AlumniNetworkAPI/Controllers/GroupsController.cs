@@ -1,107 +1,114 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using AlumniNetworkAPI.Services.GroupServices;
+using AlumniNetworkAPI.Models.Dtos.Groups;
+using AlumniNetworkAPI.Helpers;
+using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Models.Domain;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/groups")]
     [ApiController]
+    [Authorize]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class GroupsController : ControllerBase
     {
-        private readonly AlumniNetworkDbContext _context;
+        private readonly IGroupService _groupService;
+        private readonly IMapper _mapper;
 
-        public GroupsController(AlumniNetworkDbContext context)
+        public GroupsController(IMapper mapper, IGroupService groupService)
         {
-            _context = context;
+            _mapper = mapper;
+            _groupService = groupService;
         }
 
-        // GET: api/Groups
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
+        // GET: api/v1/groups
+        [HttpGet] // [TODO]: Add Query parameters!
+        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroups()
         {
-            return await _context.Groups.ToListAsync();
+            string keycloakId = this.User.GetId();
+            return _mapper.Map<List<GroupReadDto>>(await _groupService.GetGroupsAsync(keycloakId));
         }
 
-        // GET: api/Groups/5
+
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroup(int id)
+        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroupById(int id)
         {
-            var @group = await _context.Groups.FindAsync(id);
-
-            if (@group == null)
-            {
-                return NotFound();
-            }
-
-            return @group;
-        }
-
-        // PUT: api/Groups/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGroup(int id, Group @group)
-        {
-            if (id != @group.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(@group).State = EntityState.Modified;
+            string keycloakId = this.User.GetId();
 
             try
             {
-                await _context.SaveChangesAsync();
+                return _mapper.Map<List<GroupReadDto>>(await _groupService.GetGroupByIdAsync(keycloakId, id));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (NoAccessToGroupException ex)
             {
-                if (!GroupExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Forbid();
             }
-
-            return NoContent();
+            catch (Exception ex) 
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST: api/Groups
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/v1/group
         [HttpPost]
-        public async Task<ActionResult<Group>> PostGroup(Group @group)
+        public async Task<ActionResult<Group>> AddTopic(GroupCreateDto group)
         {
-            _context.Groups.Add(@group);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGroup", new { id = @group.Id }, @group);
-        }
-
-        // DELETE: api/Groups/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGroup(int id)
-        {
-            var @group = await _context.Groups.FindAsync(id);
-            if (@group == null)
+            string keycloakId = this.User.GetId();
+            Group newGroup = _mapper.Map<Group>(group);
+            try
             {
-                return NotFound();
+                newGroup = await _groupService.AddGroupAsync(newGroup, keycloakId);
+                return CreatedAtAction("GetGroups", new { id = newGroup.Id }, _mapper.Map<GroupReadDto>(newGroup));
             }
-
-            _context.Groups.Remove(@group);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (KeyNotFoundException)
+            {
+                return BadRequest("Invalid audience");
+            }
+            catch (Exception ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
 
-        private bool GroupExists(int id)
+        /*  [TODO]: Get Task describe below to work!
+            If the group for which the membership record is being created is private, then only current members of the group may create group member records for that group. 
+            Attempts to do so by non-members will result in a 403 Forbidden response.
+         */
+        [HttpPost]
+        [Route("{groupId}/join")]
+        public async Task<IActionResult> AddGroudUsers(int groupId, int? userId)
         {
-            return _context.Groups.Any(e => e.Id == id);
+            string keycloakId = null;
+
+            if (userId == null)
+            {
+                keycloakId = this.User.GetId();
+            }
+            
+            try
+            {
+                await _groupService.AddUserToGroupAsync(groupId, keycloakId, userId);
+                return Ok($"User added to group");
+            }
+            catch (KeyNotFoundException)
+            {
+                return BadRequest("Invalid audience");
+            }
+            catch (ArgumentException)
+            {
+                return Conflict();
+            }
+            catch (Exception)
+            {
+                return Forbid();
+            }
         }
     }
 }
