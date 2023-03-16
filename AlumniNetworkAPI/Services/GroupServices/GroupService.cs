@@ -17,7 +17,6 @@ namespace AlumniNetworkAPI.Services.GroupServices
 
         public async Task<IEnumerable<Group>> GetGroupsAsync(string keycloakId)
         {
-            //return await _context.Groups.ToListAsync();
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
             return await _context.Groups
                 .Where(g => g.Users.Any(u => u.Id == user.Id) || g.IsPrivate == false)

@@ -1,107 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using AlumniNetworkAPI.Helpers;
+using AutoMapper;
+using AlumniNetworkAPI.Services.EventServices;
+using AlumniNetworkAPI.Models.Dtos.Events;
+using AlumniNetworkAPI.Models.Dtos.Groups;
 using AlumniNetworkAPI.Models.Domain;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/event")]
     [ApiController]
+    [Authorize]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class EventsController : ControllerBase
     {
-        private readonly AlumniNetworkDbContext _context;
+        private readonly IEventService _eventService;
+        private readonly IMapper _mapper;
 
-        public EventsController(AlumniNetworkDbContext context)
+        public EventsController(IMapper mapper, IEventService eventService)
         {
-            _context = context;
+            _mapper = mapper;
+            _eventService = eventService;
         }
 
-        // GET: api/Events
+        // GET: api/v1/event
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
+        public async Task<ActionResult<IEnumerable<EventReadDto>>> GetEvents()
         {
-            return await _context.Events.ToListAsync();
+            string keycloakId = this.User.GetId();
+            return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync(keycloakId));
         }
 
-        // GET: api/Events/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Event>> GetEvent(int id)
+        // POST: api/v1/group
+        [HttpPost]
+        public async Task<ActionResult<Event>> AddEvent(EventCreateDto dtoEvent)
         {
-            var @event = await _context.Events.FindAsync(id);
-
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return @event;
-        }
-
-        // PUT: api/Events/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEvent(int id, Event @event)
-        {
-            if (id != @event.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(@event).State = EntityState.Modified;
+            string keycloakId = this.User.GetId();
+            Event newEvent = _mapper.Map<Event>(dtoEvent);
 
             try
             {
-                await _context.SaveChangesAsync();
+                newEvent = await _eventService.AddEventAsync(newEvent, keycloakId);
+                return CreatedAtAction("GetEvents", new { id = newEvent.Id }, _mapper.Map<GroupReadDto>(newEvent));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (KeyNotFoundException)
             {
-                if (!EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Invalid audience");
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Events
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Event>> PostEvent(Event @event)
-        {
-            _context.Events.Add(@event);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
-        }
-
-        // DELETE: api/Events/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent(int id)
-        {
-            var @event = await _context.Events.FindAsync(id);
-            if (@event == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return Forbid();
             }
-
-            _context.Events.Remove(@event);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool EventExists(int id)
-        {
-            return _context.Events.Any(e => e.Id == id);
         }
     }
+
 }
