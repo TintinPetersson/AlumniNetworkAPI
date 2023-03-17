@@ -45,13 +45,13 @@ namespace AlumniNetworkAPI.Controllers
             try
             {
                 newEvent = await _eventService.AddEventAsync(newEvent, keycloakId);
-                return CreatedAtAction("GetEvents", new { id = newEvent.Id }, _mapper.Map<GroupReadDto>(newEvent));
+                return CreatedAtAction("GetEvents", new { id = newEvent.Id }, _mapper.Map<EventReadDto>(newEvent));
             }
             catch (KeyNotFoundException)
             {
                 return BadRequest("Invalid audience");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Forbid();
             }
