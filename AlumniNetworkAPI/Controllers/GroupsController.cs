@@ -27,14 +27,23 @@ namespace AlumniNetworkAPI.Controllers
             _groupService = groupService;
         }
 
-        // GET: api/v1/groups
-        [HttpGet] // [TODO]: Add Query parameters!
-        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroups()
+        /// <summary>
+        /// Returns a list of groups.
+        /// </summary>
+        /// <remarks>
+        /// Optionally accepts appropriate query parameters to search, limit and offset.
+        /// </remarks>
+        /// <param name="search">The search query used to filter the groups.</param>
+        /// <param name="limit">The maximum number of groups to return in the response.</param>
+        /// <param name="offset">The number of groups to skip before starting to return items in the response.</param>
+        /// <returns>A list of groups.</returns>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroups([FromQuery] string search = null, [FromQuery] int? limit = null, [FromQuery] int? offset = null)
         {
             string keycloakId = this.User.GetId();
-            return _mapper.Map<List<GroupReadDto>>(await _groupService.GetGroupsAsync(keycloakId));
+            var groups = await _groupService.GetGroupsAsync(keycloakId, search, limit, offset);
+            return _mapper.Map<List<GroupReadDto>>(groups);
         }
-
 
 
         [HttpGet("{id}")]

@@ -8,9 +8,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
 // Add services to the container.
 
@@ -24,9 +28,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddJsonOptions(options => {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
@@ -69,8 +71,14 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Alumni Network API",
-        Description = "Get information about users, posts, groups and events",
+        Description = "This API provides information on users, posts, topics, groups and events for a Alumni Network Application",
+        Contact = new OpenApiContact
+        {
+            Name = "Github repo",
+            Url = new Uri("https://github.com/TintinPetersson/AlumniNetworkAPI"),
+        }
     });
+    options.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();
