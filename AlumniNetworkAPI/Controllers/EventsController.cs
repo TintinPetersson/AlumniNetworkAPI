@@ -1,107 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
+using AlumniNetworkAPI.Helpers;
+using AutoMapper;
+using AlumniNetworkAPI.Services.EventServices;
+using AlumniNetworkAPI.Models.Dtos.Events;
+using AlumniNetworkAPI.Models.Dtos.Groups;
 using AlumniNetworkAPI.Models.Domain;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/event")]
     [ApiController]
+    [Authorize]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class EventsController : ControllerBase
     {
-        private readonly AlumniNetworkDbContext _context;
+        private readonly IEventService _eventService;
+        private readonly IMapper _mapper;
 
-        public EventsController(AlumniNetworkDbContext context)
+        public EventsController(IMapper mapper, IEventService eventService)
         {
-            _context = context;
+            _mapper = mapper;
+            _eventService = eventService;
         }
-
-        // GET: api/Events [] = [user]
+        
+        #region CRUD with DTOs
+        #region READ / Get
+        // GET: api/v1/event
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
+        public async Task<ActionResult<IEnumerable<EventReadDto>>> GetEvents()
         {
-            return await _context.Events.ToListAsync();
+            string keycloakId = this.User.GetId();
+            return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync(keycloakId));
         }
 
-        // GET: api/Events/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Event>> GetEvent(int id)
+        #endregion
+
+        #region POST  / Add / Create
+        // POST: api/v1/event
+        [HttpPost]
+        public async Task<ActionResult<Event>> AddEvent(EventCreateDto dtoEvent)
         {
-            var @event = await _context.Events.FindAsync(id);
-
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return @event;
-        }
-
-        // PUT: api/Events/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEvent(int id, Event @event)
-        {
-            if (id != @event.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(@event).State = EntityState.Modified;
+            string keycloakId = this.User.GetId();
+            Event newEvent = _mapper.Map<Event>(dtoEvent);
 
             try
             {
-                await _context.SaveChangesAsync();
+                newEvent = await _eventService.AddEventAsync(newEvent, keycloakId);
+                return CreatedAtAction("GetEvents", new { id = newEvent.Id }, _mapper.Map<EventReadDto>(newEvent));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (KeyNotFoundException)
             {
-                if (!EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Invalid audience");
             }
-
-            return NoContent();
+            catch (Exception)
+            {
+                return Forbid();
+            }
         }
-
-        // POST: api/Events
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Event>> PostEvent(Event @event)
+        //POST: api/event/{eventId}/invite/group/{groupId}
+        [HttpPost("{eventId}/invite/group/{groupId}")]
+        public async Task<IActionResult> CreateGroupEventInvitation(int eventId, int groupId)
         {
-            _context.Events.Add(@event);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
-        }
-
-        // DELETE: api/Events/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent(int id)
-        {
-            var @event = await _context.Events.FindAsync(id);
-            if (@event == null)
+            if(!_eventService.Exists(eventId))
             {
                 return NotFound();
             }
-
-            _context.Events.Remove(@event);
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                await _eventService.CreateGroupEventInvitation(eventId, groupId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
             return NoContent();
         }
 
-        private bool EventExists(int id)
+        #endregion 
+
+        #region PUT / Update
+        //PUT: api/events/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEventAsync(int id, EventEditDto ev)
         {
-            return _context.Events.Any(e => e.Id == id);
+            string keycloakId = this.User.GetId();
+
+            if (id != ev.Id)
+            {
+                return BadRequest();
+            }
+            if (!_eventService.Exists(id))
+            {
+                return NotFound();
+            }
+            Event domainEvent = _mapper.Map<Event>(ev);
+            await _eventService.UpdateEventAsync(domainEvent, keycloakId, id);
+            return NoContent();
         }
+
+        #endregion
+
+
+        #endregion
     }
+
 }

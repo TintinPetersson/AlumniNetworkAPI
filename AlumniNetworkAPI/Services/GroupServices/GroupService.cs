@@ -17,7 +17,7 @@ namespace AlumniNetworkAPI.Services.GroupServices
         #region READ
         public async Task<IEnumerable<Group>> GetGroupsAsync(string keycloakId, string search = null, int? limit = null, int? offset = null)
         {
-    
+
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
 
             var query = _context.Groups
