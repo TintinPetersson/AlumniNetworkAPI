@@ -34,21 +34,35 @@ namespace AlumniNetworkAPI.Controllers
             _userService = userService;
         }
 
-        // GET: api/Users
+        #region CRUD
+        #region READ
+        /// <summary>
+        /// Returns user id of user that is calling the endpoint and a corresponding redirect link.
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult<UserReadDto>> GetUser()
+        public async Task<ActionResult> GetUser()
         {
-            string? keycloakId = this.User.GetId();
-            var username = this.User.GetUsername();
+                string? keycloakId = this.User.GetId();
+                var username = this.User.GetUsername();
 
-            if (keycloakId == null || username == null)
-            {
-                return BadRequest();
-            }
-            return Ok(_mapper.Map<UserReadDto>(await _userService.GetUserAsync(keycloakId, username)));
+                if (keycloakId == null || username == null)
+                {
+                    return BadRequest();
+                }
+
+                var user = await _userService.GetUserAsync(keycloakId, username);
+
+                var profileUrl = $"https://localhost:7240/api/v1/Users/{user.Id}";
+
+                HttpContext.Response.Headers.Add("Location", profileUrl);
+                return StatusCode(303);
         }
 
-        // GET: api/Users/5
+        /// <summary>
+        /// Returns user data of specify user.
+        /// </summary>
+        /// <param name="id">Specify a user by its Id.</param>
+        /// <returns>The user that corresponds to given Id.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<UserReadDto>> GetUserById(int id)
         {
@@ -66,8 +80,15 @@ namespace AlumniNetworkAPI.Controllers
                 });
             }
         }
-
-        // PUT: api/Users/5
+        #endregion
+        #region UPDATE
+        /// <summary>
+        /// Edit user data of specify user.
+        /// </summary>
+        /// <param name="id">Specify a user by its Id.</param>
+        /// /// <remarks>
+        /// Accepts appropriate parameters in the request body as application/json.
+        /// </remarks>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, UserEditDto userInput)
         {
@@ -84,5 +105,7 @@ namespace AlumniNetworkAPI.Controllers
 
             return Ok(userToPatch);
         }
+        #endregion
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AlumniNetworkAPI.Models.Domain;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
+
 namespace AlumniNetworkAPI.Services.PostServices
 {
     public class PostService : IPostService
@@ -10,83 +10,83 @@ namespace AlumniNetworkAPI.Services.PostServices
         {
             _context = context;
         }
-        public async Task<IEnumerable<Post>> GetPostsAsync(string keycloakId)
+
+        #region READ
+        public async Task<IEnumerable<Post>> GetPostsAsync(string keycloakId, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
             User user = _context.Users.First(u => u.KeycloakId == keycloakId);
-            return await _context.Posts
+
+            var query = _context.Posts
                 .Include(c => c.Group)
                 .Include(c => c.Topic)
                 .Include(c => c.Author)
                 .Include(c => c.Replies).ThenInclude(x => x.Author)
                 .Where(c => c.ParentPostId == null)
-                .Where(c => c.Group.Users.Contains(user) || c.Topic.Users.Contains(user))
-                .OrderByDescending(c => c.LastUpdated.Date)
-                .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+                .Where(c => c.Group.Users.Contains(user) || c.Topic.Users.Contains(user));
+
+            return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
-        public async Task<IEnumerable<Post>> GetMessagesAsync(string keycloakId)
+
+        public async Task<IEnumerable<Post>> GetMessagesAsync(string keycloakId, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
             User user = _context.Users.First(u => u.KeycloakId == keycloakId);
-            return await _context.Posts
-                .Where(c => c.RecieverId == user.Id)
-                .OrderByDescending(c => c.LastUpdated.Date)
-                .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+            var query = _context.Posts.Where(p => p.RecieverId == user.Id);
+
+            return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
-        public async Task<IEnumerable<Post>> GetPostByIdAsync(int id, string keycloakId)
+
+        public async Task<IEnumerable<Post>> GetPostByIdAsync(int id, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
-            User user = _context.Users.First(u => u.KeycloakId == keycloakId);
-            return await _context.Posts
-                .Where(c => c.RecieverId == user.Id && c.AuthorId == id)
-                .OrderByDescending(c => c.LastUpdated.Date)
-                .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+            var query = _context.Posts.Where(p => p.RecieverId == id && p.AuthorId == id);
+
+            return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
-        public async Task<IEnumerable<Post>> GetGroupPosts(int groupId)
+
+        public async Task<IEnumerable<Post>> GetGroupPosts(int groupId, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
-            return await _context.Posts
+            var query = _context.Posts
                 .Include(c => c.Group)
                 .Include(c => c.Topic)
                 .Include(c => c.Author)
                 .Include(c => c.Replies).ThenInclude(x => x.Author)
                 .Where(c => c.GroupId == groupId)
-                .Where(c => c.ParentPostId == null)
-                .OrderByDescending(c => c.LastUpdated.Date)
-                .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+                .Where(c => c.ParentPostId == null);
+
+            return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
-        public async Task<IEnumerable<Post>> GetTopicPosts(int topicId)
+
+        public async Task<IEnumerable<Post>> GetTopicPosts(int topicId, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
-            return await _context.Posts
+            var query = _context.Posts
                 .Include(c => c.Group)
                 .Include(c => c.Topic)
                 .Include(c => c.Author)
                 .Include(c => c.Replies).ThenInclude(x => x.Author)
                 .Where(c => c.TopicId == topicId)
-                .Where(c => c.ParentPostId == null)
-                .OrderByDescending(c => c.LastUpdated.Date)
-                .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+                .Where(c => c.ParentPostId == null);
+            return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
-        public async Task<IEnumerable<Post>> GetEventPosts(int eventId)
+        public async Task<IEnumerable<Post>> GetEventPosts(int eventId, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
-            return await _context.Posts
+            var query = _context.Posts
                 .Include(c => c.Group)
                 .Include(c => c.Topic)
                 .Include(c => c.Author)
                 .Include(c => c.Replies).ThenInclude(x => x.Author)
                 .Where(c => c.EventId == eventId)
-                .Where(c => c.ParentPostId == null)
-                .OrderByDescending(c => c.LastUpdated.Date)
-                .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+                .Where(c => c.ParentPostId == null);
+            return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
+        #endregion
+        #region UPDATE
         public async Task UpdatePostAsync(Post post)
         {
             post.LastUpdated = DateTime.Now;
             _context.Entry(post).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+        #endregion
+        #region CREATE
         public async Task<Post> AddPostAsync(Post domainPost, string keycloakId)
         {
             User user = _context.Users
@@ -124,5 +124,37 @@ namespace AlumniNetworkAPI.Services.PostServices
             await _context.SaveChangesAsync();
             return domainPost;
         }
+        #endregion
+        #region Helper functions
+        private static IQueryable<Post> queryParameters(IQueryable<Post> query, string? search = null, string? filter = null, int? limit = null, int? offset = null)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(p => p.Title.Contains(search) || p.Body.Contains(search));
+            }
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                switch (filter.ToLower())
+                {
+                    case "ascending":
+                        query = query.OrderBy(p => p.LastUpdated.Date).ThenBy(p => p.LastUpdated.TimeOfDay);
+                        break;
+                    case "descending":
+                        query = query.OrderByDescending(p => p.LastUpdated.Date).ThenBy(p => p.LastUpdated.TimeOfDay);
+                        break;
+                    default:
+                        throw new Exception("Invalid filter value");
+                }
+            }
+
+            if (offset.HasValue)
+                query = query.Skip(offset.Value);
+
+            if (limit.HasValue)
+                query = query.Take(limit.Value);
+            return query;
+        }
+        #endregion
     }
 }

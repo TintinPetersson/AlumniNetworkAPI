@@ -1,6 +1,4 @@
-﻿using AlumniNetworkAPI.Models.Domain;
-using AlumniNetworkAPI.Models.Dtos.Users;
-using System.ComponentModel.DataAnnotations;
+﻿using AlumniNetworkAPI.Models.Dtos.Users;
 
 namespace AlumniNetworkAPI.Models.Dtos.Posts
 {
@@ -17,7 +15,6 @@ namespace AlumniNetworkAPI.Models.Dtos.Posts
         public int? GroupId { get; set; }
         public int? EventId { get; set; }
         public int? ParentId { get; set; }
-
         public ICollection<PostGroupReadDTO>? Replies { get; set; } //One-Many
     }
 }
