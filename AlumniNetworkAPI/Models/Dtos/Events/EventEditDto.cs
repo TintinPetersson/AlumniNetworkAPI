@@ -4,6 +4,7 @@ namespace AlumniNetworkAPI.Models.Dtos.Events
 {
     public class EventEditDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public bool AllowGuests { get; set; }

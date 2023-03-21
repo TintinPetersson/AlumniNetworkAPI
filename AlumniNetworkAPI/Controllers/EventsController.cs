@@ -26,7 +26,8 @@ namespace AlumniNetworkAPI.Controllers
             _mapper = mapper;
             _eventService = eventService;
         }
-
+        #region CRUD with DTOs
+        #region READ / Get
         // GET: api/v1/event
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventReadDto>>> GetEvents()
@@ -35,7 +36,10 @@ namespace AlumniNetworkAPI.Controllers
             return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync(keycloakId));
         }
 
-        // POST: api/v1/group
+        #endregion
+
+        #region POST  / Add / Create
+        // POST: api/v1/event
         [HttpPost]
         public async Task<ActionResult<Event>> AddEvent(EventCreateDto dtoEvent)
         {
@@ -56,6 +60,51 @@ namespace AlumniNetworkAPI.Controllers
                 return Forbid();
             }
         }
+        //POST: api/event/{eventId}/invite/group/{groupId}
+        [HttpPost("{eventId}/invite/group/{groupId}")]
+        public async Task<IActionResult> CreateGroupEventInvitation(int eventId, int groupId)
+        {
+            if(!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            try
+            {
+                await _eventService.CreateGroupEventInvitation(eventId, groupId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            return NoContent();
+        }
+
+        #endregion 
+
+        #region PUT / Update
+        //PUT: api/events/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEventAsync(int id, EventEditDto ev)
+        {
+            string keycloakId = this.User.GetId();
+
+            if (id != ev.Id)
+            {
+                return BadRequest();
+            }
+            if (!_eventService.Exists(id))
+            {
+                return NotFound();
+            }
+            Event domainEvent = _mapper.Map<Event>(ev);
+            await _eventService.UpdateEventAsync(domainEvent, keycloakId, id);
+            return NoContent();
+        }
+
+        #endregion
+
+
+        #endregion
     }
 
 }
