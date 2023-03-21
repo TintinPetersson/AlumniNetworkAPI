@@ -58,7 +58,7 @@ namespace AlumniNetworkAPI.Controllers
         }
 
         // GET: api/Posts/5
-        [HttpGet("user/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<PostReadDto>> GetPostById(int id)
         {
             try
@@ -70,8 +70,15 @@ namespace AlumniNetworkAPI.Controllers
                     return BadRequest();
                 }
 
-                var posts = await _postService.GetPostByIdAsync(id, keycloakId);
-                var postDto = _mapper.Map<PostReadDto>(posts);
+                var post = await _postService.GetPostByIdAsync(id);
+                if (post == null)
+                {
+                    return NotFound(new ProblemDetails
+                    {
+                        Detail = "Post not found",
+                    });
+                }
+                var postDto = _mapper.Map<PostReadDto>(post);
                 return Ok(postDto);
             }
             catch (PostNotFoundException ex)

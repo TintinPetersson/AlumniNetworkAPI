@@ -38,17 +38,11 @@ namespace AlumniNetworkAPI.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroupById(int id)
+        public async Task<ActionResult<GroupReadDto>> GetGroupById(int id)
         {
-            string keycloakId = this.User.GetId();
-
             try
             {
-                return _mapper.Map<List<GroupReadDto>>(await _groupService.GetGroupByIdAsync(keycloakId, id));
-            }
-            catch (NoAccessToGroupException ex)
-            {
-                return Forbid();
+                return _mapper.Map<GroupReadDto>(await _groupService.GetGroupByIdAsync(id));
             }
             catch (Exception ex) 
             {

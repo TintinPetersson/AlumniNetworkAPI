@@ -21,21 +21,23 @@ namespace AlumniNetworkAPI.Services.GroupServices
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
             return await _context.Groups
                 .Where(g => g.Users.Any(u => u.Id == user.Id) || g.IsPrivate == false)
+                .Include(g => g.Users)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Group>> GetGroupByIdAsync(string keycloakId, int id)
+        public async Task<Group> GetGroupByIdAsync(int id)
         {
-            User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
-            Group group = _context.Groups.Include(g => g.Users).FirstOrDefault(g => g.Id == id);
+            Group group = await _context.Groups
+                .Include(g => g.Users)
+                .Include(g => g.Posts)
+                .FirstOrDefaultAsync(g => g.Id == id);
 
-             
-            if (group.IsPrivate && !group.Users.Any(u => u.Id == user.Id))
+            if (group == null)
             {
-                throw new NoAccessToGroupException(user.Id, group.Id);
+                throw new GroupNotFoundException(id);
             }
-            return await _context.Groups
-               .Where(g => g.Id == id).ToListAsync();
+
+            return group;
         }
 
         public async Task<Group> AddGroupAsync(Group newGroup, string keycloakId)

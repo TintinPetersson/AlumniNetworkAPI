@@ -16,7 +16,15 @@ namespace AlumniNetworkAPI.Services.UserServices
 
         public async Task<User> GetUserAsync(string keycloakId, string username)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.KeycloakId == keycloakId);
+            var user = await _context.Users
+                .Include(u => u.Groups)
+                .Include(u => u.AuthoredPosts)
+                .Include(u => u.RecievedPosts)
+                .Include(u => u.UnrespondedEvents)
+                .Include(u => u.Topics)
+                .Include(u => u.AcceptedEvents)
+                .Include(u => u.AuthoredEvents)
+                .SingleOrDefaultAsync(u => u.KeycloakId == keycloakId);
 
             if(user == null)
             {
@@ -27,7 +35,15 @@ namespace AlumniNetworkAPI.Services.UserServices
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
+            var user = await _context.Users
+                .Include(u => u.Groups)
+                .Include(u => u.AuthoredPosts)
+                .Include(u => u.RecievedPosts)
+                .Include(u => u.UnrespondedEvents)
+                .Include(u => u.Topics)
+                .Include(u => u.AcceptedEvents)
+                .Include(u => u.AuthoredEvents)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if(user == null)
             {

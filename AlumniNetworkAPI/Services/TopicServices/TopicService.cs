@@ -15,7 +15,10 @@ public class TopicService : ITopicService
 
     public async Task<IEnumerable<Topic>> GetTopicsAsync()
     {
-        return await _context.Topics.ToListAsync();
+        return await _context.Topics
+            .Include(t => t.Users)
+            .Include(t => t.Posts)
+            .ToListAsync();
     }
     public async Task<IEnumerable<Topic>> GetTopicsByIdAsync(int id)
     {

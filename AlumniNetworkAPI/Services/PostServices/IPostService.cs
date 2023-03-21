@@ -7,7 +7,7 @@ namespace AlumniNetworkAPI.Services.PostServices
     {
         Task<IEnumerable<Post>> GetPostsAsync(string keycloakId);
         Task<IEnumerable<Post>> GetMessagesAsync(string keycloakId);
-        Task<IEnumerable<Post>> GetPostByIdAsync(int id, string keycloakId);
+        Task<Post> GetPostByIdAsync(int id);
         Task<IEnumerable<Post>> GetGroupPosts(int groupId);
         Task<IEnumerable<Post>> GetTopicPosts(int topicId);
         Task<IEnumerable<Post>> GetEventPosts(int eventId);

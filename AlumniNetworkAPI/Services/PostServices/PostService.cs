@@ -33,14 +33,19 @@ namespace AlumniNetworkAPI.Services.PostServices
                 .ThenBy(c => c.LastUpdated.TimeOfDay)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Post>> GetPostByIdAsync(int id, string keycloakId)
+        public async Task<Post> GetPostByIdAsync(int id)
         {
-            User user = _context.Users.First(u => u.KeycloakId == keycloakId);
-            return await _context.Posts
-                .Where(c => c.RecieverId == user.Id && c.AuthorId == id)
+            var post = await _context.Posts
+                .Where(c => c.AuthorId == id)
+                .Include(c => c.Author)
+                .Include(c => c.Group)
+                .Include(c => c.Topic)
+                .Include(c => c.Event)
                 .OrderByDescending(c => c.LastUpdated.Date)
                 .ThenBy(c => c.LastUpdated.TimeOfDay)
-                .ToListAsync();
+                .FirstOrDefaultAsync();
+
+            return post;
         }
         public async Task<IEnumerable<Post>> GetGroupPosts(int groupId)
         {
