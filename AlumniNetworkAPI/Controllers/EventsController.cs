@@ -20,7 +20,7 @@ namespace AlumniNetworkAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Events
+        // GET: api/Events [] = [user]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {

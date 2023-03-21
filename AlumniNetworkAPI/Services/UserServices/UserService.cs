@@ -3,6 +3,8 @@ using AlumniNetworkAPI.Models.Domain;
 using AlumniNetworkAPI.Models.Dtos.Users;
 using Microsoft.EntityFrameworkCore;
 using AlumniNetworkAPI.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 
 namespace AlumniNetworkAPI.Services.UserServices
 {
@@ -13,7 +15,7 @@ namespace AlumniNetworkAPI.Services.UserServices
         {
             _context = context;
         }
-
+        #region READ
         public async Task<User> GetUserAsync(string keycloakId, string username)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.KeycloakId == keycloakId);
@@ -36,8 +38,8 @@ namespace AlumniNetworkAPI.Services.UserServices
 
             return user;
         }
-
-
+        #endregion
+        #region UPDATE
         public async Task UpdateUserAsync(User patchUser, User userToPatch)
         {
             if (patchUser.Username != null)
@@ -73,7 +75,8 @@ namespace AlumniNetworkAPI.Services.UserServices
             await _context.SaveChangesAsync();
             return user;
         }
-
+        #endregion
+        #region Helper functions
         public async Task<bool> UserInDb(string keycloakId)
         {
             return await _context.Users.AnyAsync(c => c.KeycloakId == keycloakId);
@@ -84,5 +87,6 @@ namespace AlumniNetworkAPI.Services.UserServices
             User user = _context.Users.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId).Result;
             return user;
         }
+        #endregion
     }
 }
