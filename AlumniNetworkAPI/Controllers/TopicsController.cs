@@ -7,10 +7,12 @@ using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.Models.Dtos.Topics;
 using AlumniNetworkAPI.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using AlumniNetworkAPI.CustomExceptions;
+using System.Collections.Generic;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/v1/topic")]
+    [Route("api/v1/topics")]
     [ApiController]
     [Authorize]
     [Produces(MediaTypeNames.Application.Json)]
@@ -26,24 +28,59 @@ namespace AlumniNetworkAPI.Controllers
             _mapper = mapper;
             _topicService = topicService;
         }
-
-        // GET: api/v1/Topics
+        #region CRUD
+        #region READ
+        /// <summary>
+        /// Returns a list of topics.
+        /// </summary>
+        /// <remarks>
+        /// Optionally accepts query parameters: search, limit and offset.
+        /// </remarks>
+        /// <param name="search">Search topics by name.</param>
+        /// <param name="limit">The maximum number of topics to return in the response.</param>
+        /// <param name="offset">Specify the starting point of a subset of topics within the overall list of topics, effectively skipping a certain number of topics.</param>
+        /// <returns>A list of topics.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopics()
+        public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopics([FromQuery] string? search = null, [FromQuery] int? limit = null, [FromQuery] int? offset = null)
         {
-            return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsAsync());
+            try
+            {
+                return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsAsync(search, limit, offset));
+            }
+            catch (Exception)
+            {
+                return BadRequest("Bad Request");
+            }
         }
 
-        // GET: api/v1/Topics/id
+        /// <summary>
+        /// Returns specify topic by Id.
+        /// </summary>
+        /// <param name="id">Specify a topic by its Id.</param>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<TopicReadDto>>> GetTopicsById(int id)
         {
-            //Check if id is valid and if not return topic with id not found!
-            return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id));
-
+            try
+            {
+                return _mapper.Map<List<TopicReadDto>>(await _topicService.GetTopicsByIdAsync(id));
+            }
+            catch (TopicNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Bad Request");
+            }
         }
-
-        // POST: api/v1/Topics
+        #endregion
+        #region CREATE
+        /// <summary>
+        /// Creates a new topic.
+        /// </summary>
+        /// <remarks>
+        /// Accepts appropriate parameters in the request body as application/json.
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<Topic>> AddTopic(TopicCreateDto topic)
         {
@@ -64,6 +101,13 @@ namespace AlumniNetworkAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the topic members of a specified topic. 
+        /// </summary>
+        /// <param name="topicId">Specify a topic by its Id.</param>
+        /// <remarks>
+        /// Accepts appropriate parameters in the request body as application/json.
+        /// </remarks>
         [HttpPost]
         [Route("{topicId}/join")]
         public async Task<IActionResult> AddTopicUsers(int topicId)
@@ -75,19 +119,24 @@ namespace AlumniNetworkAPI.Controllers
                 await _topicService.AddUserToTopicAsync(topicId, keycloakId);
                 return Ok($"Subscribed user to topic");
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return BadRequest("Invalid audience");
+                return BadRequest(ex.Message);
+            }
+            catch (TopicNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {
-                return Conflict(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 return Forbid(ex.Message);
             }
         }
-
+        #endregion
+        #endregion
     }
 }

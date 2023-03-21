@@ -26,17 +26,31 @@ namespace AlumniNetworkAPI.Controllers
             _mapper = mapper;
             _groupService = groupService;
         }
-
-        // GET: api/v1/groups
-        [HttpGet] // [TODO]: Add Query parameters!
-        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroups()
+        #region CRUD
+        #region READ
+        /// <summary>
+        /// Returns a list of groups.
+        /// </summary>
+        /// <remarks>
+        /// Optionally accepts query parameters: search, limit and offset.
+        /// </remarks>
+        /// <param name="search">Search groups by name.</param>
+        /// <param name="limit">The maximum number of groups to return in the response.</param>
+        /// <param name="offset">Specify the starting point of a subset of groups within the overall list of groups, effectively skipping a certain number of groups.</param>
+        /// <returns>A list of groups.</returns>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroups([FromQuery] string? search = null, [FromQuery] int? limit = null, [FromQuery] int? offset = null)
         {
             string keycloakId = this.User.GetId();
-            return _mapper.Map<List<GroupReadDto>>(await _groupService.GetGroupsAsync(keycloakId));
+            var groups = await _groupService.GetGroupsAsync(keycloakId, search, limit, offset);
+            return _mapper.Map<List<GroupReadDto>>(groups);
         }
 
-
-
+        /// <summary>
+        /// Returns a group.
+        /// </summary>
+        /// <param name="id">Specify a group by its Id.</param>
+        /// <returns>The group that corresponds to given Id.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<GroupReadDto>>> GetGroupById(int id)
         {
@@ -50,13 +64,19 @@ namespace AlumniNetworkAPI.Controllers
             {
                 return Forbid();
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
-                return NotFound(ex.Message);
+                return NotFound();
             }
         }
-
-        // POST: api/v1/group
+        #endregion
+        #region CREATE
+        /// <summary>
+        /// Creates a new group. 
+        /// </summary>
+        /// <remarks>
+        /// Accepts appropriate parameters in the request body as application/json.
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<Group>> AddTopic(GroupCreateDto group)
         {
@@ -71,16 +91,20 @@ namespace AlumniNetworkAPI.Controllers
             {
                 return BadRequest("Invalid audience");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Forbid(ex.Message);
+                return Forbid();
             }
         }
 
-        /*  [TODO]: Get Task describe below to work!
-            If the group for which the membership record is being created is private, then only current members of the group may create group member records for that group. 
-            Attempts to do so by non-members will result in a 403 Forbidden response.
-         */
+        /// <summary>
+        /// Updates the group members of a specified group. 
+        /// </summary>
+        /// <param name="groupId">Specify a group by its Id.</param>
+        /// <param name="userId">Specify a user by its Id.</param>
+        ///  <remarks>
+        /// Accepts appropriate parameters in the request body as application/json, if parameter "userId" is left empty the userId is taken form the user that calling the endpoint! 
+        /// </remarks>
         [HttpPost]
         [Route("{groupId}/join")]
         public async Task<IActionResult> AddGroudUsers(int groupId, int? userId)
@@ -105,10 +129,12 @@ namespace AlumniNetworkAPI.Controllers
             {
                 return Conflict();
             }
-            catch (Exception)
+            catch (NoAccessToGroupException)
             {
                 return Forbid();
             }
         }
+        #endregion
+        #endregion
     }
 }

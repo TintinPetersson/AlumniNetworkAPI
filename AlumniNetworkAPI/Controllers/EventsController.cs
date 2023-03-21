@@ -26,6 +26,7 @@ namespace AlumniNetworkAPI.Controllers
             _mapper = mapper;
             _eventService = eventService;
         }
+        
         #region CRUD with DTOs
         #region READ / Get
         // GET: api/v1/event
