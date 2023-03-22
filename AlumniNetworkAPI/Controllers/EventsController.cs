@@ -26,21 +26,27 @@ namespace AlumniNetworkAPI.Controllers
             _mapper = mapper;
             _eventService = eventService;
         }
-        
+
         #region CRUD with DTOs
         #region READ / Get
-        // GET: api/v1/event
+        /// <summary>
+        /// Gets all the events.
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventReadDto>>> GetEvents()
         {
             string keycloakId = this.User.GetId();
             return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync(keycloakId));
         }
-
         #endregion
 
         #region POST  / Add / Create
-        // POST: api/v1/event
+        /// <summary>
+        /// Add a new event to the list
+        /// </summary>
+        /// <remarks>
+        /// Accepts appropriate parameters in the request body as application/json.
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<Event>> AddEvent(EventCreateDto dtoEvent)
         {
@@ -61,7 +67,12 @@ namespace AlumniNetworkAPI.Controllers
                 return Forbid();
             }
         }
-        //POST: api/event/{eventId}/invite/group/{groupId}
+
+        /// <summary>
+        /// This methods creates a new event invitation to a group CreateGroupEventInvitation
+        /// </summary>
+        /// <param name="eventId">the Id of the event that we create a new invitation for</param>
+        /// <param name="groupId">The id of the group that will get the invitation</param>
         [HttpPost("{eventId}/invite/group/{groupId}")]
         public async Task<IActionResult> CreateGroupEventInvitation(int eventId, int groupId)
         {
@@ -80,7 +91,11 @@ namespace AlumniNetworkAPI.Controllers
             return NoContent();
         }
 
-        //POST: api/event/{eventId}/invite/topic/{topicId}
+        /// <summary>
+        /// This method gives an event a topic
+        /// </summary>
+        /// <param name="eventId">the ID of the event we are creating an invitation for</param>
+        /// <param name="topicId">the ID of the topic the event would have</param>
         [HttpPost("{eventId}/invite/topic/{topicId}")]
         public async Task<IActionResult> CreateTopicEventInvitation(int eventId, int topicId)
         {
@@ -99,7 +114,12 @@ namespace AlumniNetworkAPI.Controllers
             return NoContent();
         }
 
-        //POST: api/event/{eventId}/invite/user/{userId}
+        /// <summary>
+        /// This method created an event invitation to a user
+        /// </summary>
+        /// <param name="eventId">The ID of the event the user is receiving an invitation for</param>
+        /// <param name="userId">The ID of the user that is receiving the invitation</param>
+        /// <returns></returns>
         [HttpPost("{eventId}/invite/user/{userId}")]
         public async Task<IActionResult> CreateUserEventInvitation(int eventId, int userId)
         {
@@ -118,7 +138,11 @@ namespace AlumniNetworkAPI.Controllers
             return NoContent();
         }
 
-        //POST: api/event/{eventId}/rsvp
+        /// <summary>
+        /// This method creates an RSVP for the logged in user
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [HttpPost("{eventId}/rsvp")]
         public async Task<IActionResult> CreateEventRSVP(int eventId)
         {
@@ -141,7 +165,11 @@ namespace AlumniNetworkAPI.Controllers
         #endregion
 
         #region Delete
-        //Delete: api/event/{eventId}/invite/group/{groupId}
+        /// <summary>
+        /// This method deletes an event invitation to a specific group
+        /// </summary>
+        /// <param name="eventId">The ID of the event that we delete the invitation for</param>
+        /// <param name="groupId">The ID of the group that will have an event invitation deleted</param>
         [HttpDelete("{eventId}/invite/group/{groupId}")]
         public async Task<IActionResult> DeleteGroupEventInvitation(int eventId, int groupId)
         {
@@ -154,7 +182,11 @@ namespace AlumniNetworkAPI.Controllers
             return NoContent();
         }
 
-        //Delete: api/event/{eventId}/invite/topic/{topicId}
+        /// <summary>
+        /// This method removes an existing event invitation for the event and the specified topic 
+        /// </summary>
+        /// <param name="eventId">The ID of the event we are removing the topic from</param>
+        /// <param name="topicId">The Id of the topic we are removing</param>
         [HttpDelete("{eventId}/invite/topic/{topicId}")]
         public async Task<IActionResult> DeleteTopicEventInvitation(int eventId, int topicId)
         {
@@ -168,7 +200,12 @@ namespace AlumniNetworkAPI.Controllers
         }
 
 
-        //Delete: api/event/{eventId}/invite/user/{userId}
+        /// <summary>
+        /// This method removes the event invitation sent to the user
+        /// </summary>
+        /// <param name="eventId">The ID of the event we are removing the invitation for</param>
+        /// <param name="userId">The ID of the user we are removing from the invitation from</param>
+        /// <returns></returns>
         [HttpDelete("{eventId}/invite/user/{userId}")]
         public async Task<IActionResult> DeletUserEventInvitation(int eventId, int userId)
         {
@@ -180,11 +217,13 @@ namespace AlumniNetworkAPI.Controllers
 
             return NoContent();
         }
-
         #endregion
-
         #region PUT / Update
-        //PUT: api/events/{id}
+
+        /// <summary>
+        /// Update an existing event
+        /// </summary>
+        /// <param name="id">The ID of the event</param>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEventAsync(int id, EventEditDto ev)
         {
@@ -202,11 +241,7 @@ namespace AlumniNetworkAPI.Controllers
             await _eventService.UpdateEventAsync(domainEvent, keycloakId, id);
             return NoContent();
         }
-
         #endregion
-
-
         #endregion
     }
-
 }

@@ -18,9 +18,7 @@ namespace AlumniNetworkAPI.Services.EventServices
         public async Task<IEnumerable<Event>> GetEventsAsync(string keycloakId)
         {
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
-            return await _context.Events
-                //.Where(e => e.AcceptedUsers.Any(u => u.Id == user.Id))
-                .ToListAsync();
+            return await _context.Events.ToListAsync();
         }
         #endregion
 
