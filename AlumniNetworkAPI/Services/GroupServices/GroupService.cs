@@ -21,6 +21,8 @@ namespace AlumniNetworkAPI.Services.GroupServices
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
 
             var query = _context.Groups
+                .Include(g => g.Users)
+                .Include(g => g.Posts)
                 .Where(g => g.Users.Any(u => u.Id == user.Id) || g.IsPrivate == false);
 
             if (!string.IsNullOrEmpty(search))
@@ -39,7 +41,10 @@ namespace AlumniNetworkAPI.Services.GroupServices
         public async Task<IEnumerable<Group>> GetGroupByIdAsync(string keycloakId, int id)
         {
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
-            Group group = _context.Groups.Include(g => g.Users).FirstOrDefault(g => g.Id == id);
+            Group group = _context.Groups
+                .Include(g => g.Users)
+                .Include(g => g.Posts)
+                .FirstOrDefault(g => g.Id == id);
 
              
             if (group.IsPrivate && !group.Users.Any(u => u.Id == user.Id))

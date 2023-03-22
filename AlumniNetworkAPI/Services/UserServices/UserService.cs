@@ -29,7 +29,10 @@ namespace AlumniNetworkAPI.Services.UserServices
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
+            var user = await _context.Users
+                .Include(u => u.AuthoredPosts)
+                .Include(u => u.Groups)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if(user == null)
             {

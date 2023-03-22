@@ -37,7 +37,10 @@ namespace AlumniNetworkAPI.Services.PostServices
 
         public async Task<IEnumerable<Post>> GetPostByIdAsync(int id, string? search = null, string? filter = null, int? limit = null, int? offset = null)
         {
-            var query = _context.Posts.Where(p => p.RecieverId == id && p.AuthorId == id);
+            var query = _context.Posts
+                .Include(p => p.Author)
+                .Include(p => p.Group)
+                .Where(p => p.RecieverId == id && p.AuthorId == id);
 
             return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
