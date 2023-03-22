@@ -345,15 +345,15 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "Bio", "FunFact", "KeycloakId", "Picture", "Status", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Is from GBG", "Formula", "2ff40a61-2dea-418b-ad08-06aa0e0498fb", "Bild.png", "", "Filip" },
-                    { 2, "ya", "Big Formula", "f428f142-cae0-4429-b846-991c67fc4d4f", "Bild2.png", "", "Tommy" },
-                    { 3, "Karate", "Artist", "", "Bild3.png", "", "Maryam" },
-                    { 4, "Varberg", ".NET utvecklare", "", "Bild4.png", "", "TinTin" },
-                    { 5, "Jag älskar skövde", "Bestämd", "", "Bild5.png", "", "Mikael" },
-                    { 6, "Jag älskar också skövde", "Gillar att koda", "", "Bild6.png", "", "Erik" },
-                    { 7, "Jag får andra att skratta", "React är min grej", "", "Bild7.png", "", "Alexander" },
-                    { 8, "Jag gillar promenader", "Bra på Frontend", "", "Bild8.png", "", "Amanda" },
-                    { 9, "Jag gillar promenader", "Bra på Frontend", "qweqwe", "Bild9.png", "", "Manda" }
+                    { 1, "Is from GBG", "Formula", "2ff40a61-2dea-418b-ad08-06aa0e0498fb", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Filip" },
+                    { 2, "ya", "Big Formula", "f428f142-cae0-4429-b846-991c67fc4d4f", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Tommy" },
+                    { 3, "Karate", "Artist", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Maryam" },
+                    { 4, "Varberg", ".NET utvecklare", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "TinTin" },
+                    { 5, "Jag älskar skövde", "Bestämd", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Mikael" },
+                    { 6, "Jag älskar också skövde", "Gillar att koda", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Erik" },
+                    { 7, "Jag får andra att skratta", "React är min grej", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Alexander" },
+                    { 8, "Jag gillar promenader", "Bra på Frontend", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Amanda" },
+                    { 9, "Jag gillar promenader", "Bra på Frontend", "qweqwe", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Manda" }
                 });
 
             migrationBuilder.InsertData(
@@ -363,6 +363,7 @@ namespace AlumniNetworkAPI.Migrations
                 {
                     { 1, 1 },
                     { 2, 2 },
+                    { 2, 3 },
                     { 3, 3 }
                 });
 
@@ -372,7 +373,8 @@ namespace AlumniNetworkAPI.Migrations
                 values: new object[,]
                 {
                     { 1, 2 },
-                    { 3, 2 }
+                    { 3, 2 },
+                    { 1, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -399,9 +401,10 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "AuthorId", "Body", "EventId", "GroupId", "LastUpdated", "ParentPostId", "RecieverId", "Title", "TopicId" },
                 values: new object[,]
                 {
-                    { 1, 1, "Hejsan svejsan", null, null, new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4155), null, null, "Maryams Dagbok", 1 },
-                    { 2, 2, "Svejsan Hejsan", null, null, new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4193), null, null, "Maryams Ica Lista", 2 },
-                    { 3, 3, "Hej svej", null, null, new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4195), null, null, "Maryams Hemliga bok", 1 }
+                    { 1, 1, "Hejsan svejsan", null, 1, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8824), null, 1, "Maryams Dagbok", 1 },
+                    { 2, 2, "Svejsan Hejsan", null, 2, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8868), null, 2, "Maryams Ica Lista", 2 },
+                    { 3, 3, "Hej svej", null, 3, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8871), null, 3, "Maryams Hemliga bok", 1 },
+                    { 4, 4, "Hemligt!", null, 4, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8873), null, 3, "Filips äventyr", 3 }
                 });
 
             migrationBuilder.InsertData(

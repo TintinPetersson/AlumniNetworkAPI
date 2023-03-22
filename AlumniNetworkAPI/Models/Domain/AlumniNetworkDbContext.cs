@@ -37,7 +37,7 @@ namespace AlumniNetworkAPI.Models.Domain
             );
 
             modelBuilder.Entity<Post>().HasData(
-                new Post { Id = 1, Title = "Maryams Dagbok", Body = "Hejsan svejsan", LastUpdated = DateTime.Now, AuthorId = 1, TopicId = 1, GroupId = 1, RecieverId = 1 },
+                new Post { Id = 1, Title = "Maryams Dagbok", Body = "Hejsan svejsan", LastUpdated = DateTime.Now, AuthorId = 1, TopicId = 1, GroupId = 1, EventId = 2 ,RecieverId = 1 },
                 new Post { Id = 2, Title = "Maryams Ica Lista", Body = "Svejsan Hejsan", LastUpdated = DateTime.Now, AuthorId = 2, TopicId = 2, GroupId = 2, RecieverId = 2 },
                 new Post { Id = 3, Title = "Maryams Hemliga bok", Body = "Hej svej", LastUpdated = DateTime.Now, AuthorId = 3, TopicId = 1, GroupId = 3 , RecieverId = 3 },
                  new Post { Id = 4, Title = "Filips äventyr", Body = "Hemligt!", LastUpdated = DateTime.Now, AuthorId = 4, TopicId = 3, GroupId = 4, RecieverId = 3 }
@@ -66,6 +66,16 @@ namespace AlumniNetworkAPI.Models.Domain
             .WithOne(e => e.ParentPost)
             .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Post>()
+            .HasOne(p => p.Group)
+            .WithMany(g => g.Posts)
+            .HasForeignKey(p => p.GroupId);
+
+            modelBuilder.Entity<Post>()
+            .HasOne(p => p.Event)
+            .WithMany(g => g.Posts)
+            .HasForeignKey(p => p.EventId);
+
             modelBuilder.Entity<User>()
             .HasMany(e => e.AuthoredEvents)
             .WithOne(e => e.Author)
@@ -80,6 +90,7 @@ namespace AlumniNetworkAPI.Models.Domain
             .HasMany(e => e.RecievedPosts)
             .WithOne(e => e.Reciever)
             .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.Entity<User>()
             .HasMany(e => e.AcceptedEvents)
@@ -225,6 +236,8 @@ namespace AlumniNetworkAPI.Models.Domain
                         new { TopicsId = 3, EventsId = 1 }
                     );
                 });
+
+
         }
     }
 }

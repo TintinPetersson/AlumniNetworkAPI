@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlumniNetworkAPI.Migrations
 {
     [DbContext(typeof(AlumniNetworkDbContext))]
-    [Migration("20230315151651_initial")]
+    [Migration("20230322201916_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -224,7 +224,9 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 1,
                             AuthorId = 1,
                             Body = "Hejsan svejsan",
-                            LastUpdated = new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4155),
+                            GroupId = 1,
+                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8824),
+                            RecieverId = 1,
                             Title = "Maryams Dagbok",
                             TopicId = 1
                         },
@@ -233,7 +235,9 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 2,
                             AuthorId = 2,
                             Body = "Svejsan Hejsan",
-                            LastUpdated = new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4193),
+                            GroupId = 2,
+                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8868),
+                            RecieverId = 2,
                             Title = "Maryams Ica Lista",
                             TopicId = 2
                         },
@@ -242,9 +246,22 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 3,
                             AuthorId = 3,
                             Body = "Hej svej",
-                            LastUpdated = new DateTime(2023, 3, 15, 16, 16, 51, 605, DateTimeKind.Local).AddTicks(4195),
+                            GroupId = 3,
+                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8871),
+                            RecieverId = 3,
                             Title = "Maryams Hemliga bok",
                             TopicId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AuthorId = 4,
+                            Body = "Hemligt!",
+                            GroupId = 4,
+                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8873),
+                            RecieverId = 3,
+                            Title = "Filips äventyr",
+                            TopicId = 3
                         });
                 });
 
@@ -336,7 +353,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Is from GBG",
                             FunFact = "Formula",
                             KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb",
-                            Picture = "Bild.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Filip"
                         },
@@ -346,7 +363,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "ya",
                             FunFact = "Big Formula",
                             KeycloakId = "f428f142-cae0-4429-b846-991c67fc4d4f",
-                            Picture = "Bild2.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Tommy"
                         },
@@ -356,7 +373,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Karate",
                             FunFact = "Artist",
                             KeycloakId = "",
-                            Picture = "Bild3.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Maryam"
                         },
@@ -366,7 +383,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Varberg",
                             FunFact = ".NET utvecklare",
                             KeycloakId = "",
-                            Picture = "Bild4.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "TinTin"
                         },
@@ -376,7 +393,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Jag älskar skövde",
                             FunFact = "Bestämd",
                             KeycloakId = "",
-                            Picture = "Bild5.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Mikael"
                         },
@@ -386,7 +403,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Jag älskar också skövde",
                             FunFact = "Gillar att koda",
                             KeycloakId = "",
-                            Picture = "Bild6.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Erik"
                         },
@@ -396,7 +413,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Jag får andra att skratta",
                             FunFact = "React är min grej",
                             KeycloakId = "",
-                            Picture = "Bild7.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Alexander"
                         },
@@ -406,7 +423,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Jag gillar promenader",
                             FunFact = "Bra på Frontend",
                             KeycloakId = "",
-                            Picture = "Bild8.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Amanda"
                         },
@@ -416,7 +433,7 @@ namespace AlumniNetworkAPI.Migrations
                             Bio = "Jag gillar promenader",
                             FunFact = "Bra på Frontend",
                             KeycloakId = "qweqwe",
-                            Picture = "Bild9.png",
+                            Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                             Status = "",
                             Username = "Manda"
                         });
@@ -451,6 +468,11 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             GroupsId = 3,
                             EventsId = 3
+                        },
+                        new
+                        {
+                            GroupsId = 3,
+                            EventsId = 2
                         });
                 });
 
@@ -478,6 +500,11 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             TopicsId = 2,
                             EventsId = 3
+                        },
+                        new
+                        {
+                            TopicsId = 3,
+                            EventsId = 1
                         });
                 });
 
