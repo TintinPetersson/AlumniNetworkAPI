@@ -13,7 +13,7 @@ namespace AlumniNetworkAPI.Models.Domain
         [Required]
         public string Username { get; set; }
         [MaxLength(int.MaxValue)]
-        public string? Picture { get; set; }
+        public string? Picture { get; set; } = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
         [MaxLength(20)]
         [Required]
         public string Status { get; set; }

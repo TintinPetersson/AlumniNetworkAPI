@@ -19,15 +19,15 @@ namespace AlumniNetworkAPI.Models.Domain
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb", Username = "Filip", Picture = "Bild.png", Status = "", Bio = "Is from GBG", FunFact = "Formula" },
-                new User { Id = 2, KeycloakId = "f428f142-cae0-4429-b846-991c67fc4d4f", Username = "Tommy", Picture = "Bild2.png", Status = "", Bio = "ya", FunFact = "Big Formula" },
-                new User { Id = 3, KeycloakId = "", Username = "Maryam", Picture = "Bild3.png", Status = "", Bio = "Karate", FunFact = "Artist" },
-                new User { Id = 4, KeycloakId = "", Username = "TinTin", Picture = "Bild4.png", Status = "", Bio = "Varberg", FunFact = ".NET utvecklare" },
-                new User { Id = 5, KeycloakId = "", Username = "Mikael", Picture = "Bild5.png", Status = "", Bio = "Jag älskar skövde", FunFact = "Bestämd" },
-                new User { Id = 6, KeycloakId = "", Username = "Erik", Picture = "Bild6.png", Status = "", Bio = "Jag älskar också skövde", FunFact = "Gillar att koda" },
-                new User { Id = 7, KeycloakId = "", Username = "Alexander", Picture = "Bild7.png", Status = "", Bio = "Jag får andra att skratta", FunFact = "React är min grej" },
-                new User { Id = 8, KeycloakId = "", Username = "Amanda", Picture = "Bild8.png", Status = "", Bio = "Jag gillar promenader", FunFact = "Bra på Frontend" },
-                new User { Id = 9, KeycloakId = "qweqwe", Username = "Manda", Picture = "Bild9.png", Status = "", Bio = "Jag gillar promenader", FunFact = "Bra på Frontend" }
+                new User { Id = 1, KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb", Username = "Filip", Status = "", Bio = "Is from GBG", FunFact = "Formula" },
+                new User { Id = 2, KeycloakId = "f428f142-cae0-4429-b846-991c67fc4d4f", Username = "Tommy", Status = "", Bio = "ya", FunFact = "Big Formula" },
+                new User { Id = 3, KeycloakId = "", Username = "Maryam", Status = "", Bio = "Karate", FunFact = "Artist" },
+                new User { Id = 4, KeycloakId = "", Username = "TinTin", Status = "", Bio = "Varberg", FunFact = ".NET utvecklare" },
+                new User { Id = 5, KeycloakId = "", Username = "Mikael", Status = "", Bio = "Jag älskar skövde", FunFact = "Bestämd" },
+                new User { Id = 6, KeycloakId = "", Username = "Erik", Status = "", Bio = "Jag älskar också skövde", FunFact = "Gillar att koda" },
+                new User { Id = 7, KeycloakId = "", Username = "Alexander", Status = "", Bio = "Jag får andra att skratta", FunFact = "React är min grej" },
+                new User { Id = 8, KeycloakId = "", Username = "Amanda", Status = "", Bio = "Jag gillar promenader", FunFact = "Bra på Frontend" },
+                new User { Id = 9, KeycloakId = "qweqwe", Username = "Manda", Status = "", Bio = "Jag gillar promenader", FunFact = "Bra på Frontend" }
             );
 
             modelBuilder.Entity<Topic>().HasData(
@@ -37,9 +37,10 @@ namespace AlumniNetworkAPI.Models.Domain
             );
 
             modelBuilder.Entity<Post>().HasData(
-                new Post { Id = 1, Title = "Maryams Dagbok", Body = "Hejsan svejsan", LastUpdated = DateTime.Now, AuthorId = 1, TopicId = 1 },
-                new Post { Id = 2, Title = "Maryams Ica Lista", Body = "Svejsan Hejsan", LastUpdated = DateTime.Now, AuthorId = 2, TopicId = 2 },
-                new Post { Id = 3, Title = "Maryams Hemliga bok", Body = "Hej svej", LastUpdated = DateTime.Now, AuthorId = 3, TopicId = 1 }
+                new Post { Id = 1, Title = "Maryams Dagbok", Body = "Hejsan svejsan", LastUpdated = DateTime.Now, AuthorId = 1, TopicId = 1, GroupId = 1, RecieverId = 1 },
+                new Post { Id = 2, Title = "Maryams Ica Lista", Body = "Svejsan Hejsan", LastUpdated = DateTime.Now, AuthorId = 2, TopicId = 2, GroupId = 2, RecieverId = 2 },
+                new Post { Id = 3, Title = "Maryams Hemliga bok", Body = "Hej svej", LastUpdated = DateTime.Now, AuthorId = 3, TopicId = 1, GroupId = 3 , RecieverId = 3 },
+                 new Post { Id = 4, Title = "Filips äventyr", Body = "Hemligt!", LastUpdated = DateTime.Now, AuthorId = 4, TopicId = 3, GroupId = 4, RecieverId = 3 }
             );
 
 
@@ -203,7 +204,8 @@ namespace AlumniNetworkAPI.Models.Domain
                 je.HasData(
                     new { GroupsId = 1, EventsId = 1 },
                     new { GroupsId = 2, EventsId = 2 },
-                    new { GroupsId = 3, EventsId = 3 }
+                    new { GroupsId = 3, EventsId = 3 },
+                    new { GroupsId = 3, EventsId = 2 }
                     );
             });
 
@@ -219,7 +221,8 @@ namespace AlumniNetworkAPI.Models.Domain
                     je.HasKey("TopicsId", "EventsId");
                     je.HasData(
                         new { TopicsId = 2, EventsId = 1 },
-                        new { TopicsId = 2, EventsId = 3 }
+                        new { TopicsId = 2, EventsId = 3 },
+                        new { TopicsId = 3, EventsId = 1 }
                     );
                 });
         }

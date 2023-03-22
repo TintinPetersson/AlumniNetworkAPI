@@ -12,8 +12,8 @@ namespace AlumniNetworkAPI.Models.Dtos.Groups
         public string? Description { get; set; }
         public bool IsPrivate { get; set; }
 
-        public virtual ICollection<EventReadDto>? Events { get; set; } //Many-to-many
-        public virtual ICollection<PostReadDto>? Posts { get; set; } //One-to-many
+        public virtual ICollection<EventGroupReadDto>? Events { get; set; } //Many-to-many
+        public virtual ICollection<PostGroupReadDTO>? Posts { get; set; } //One-to-many
         public virtual ICollection<UserReadDto>? Users { get; set; } //Many-to-many
     }
 }
