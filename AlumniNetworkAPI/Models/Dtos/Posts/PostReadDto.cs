@@ -1,4 +1,5 @@
-﻿using AlumniNetworkAPI.Models.Dtos.Users;
+﻿using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Models.Dtos.Users;
 
 namespace AlumniNetworkAPI.Models.Dtos.Posts
 {
