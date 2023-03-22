@@ -13,7 +13,7 @@ namespace AlumniNetworkAPI.Services.EventServices
             _context = context;
         }
 
-        #region Get
+        #region Read
 
         public async Task<IEnumerable<Event>> GetEventsAsync(string keycloakId)
         {
@@ -76,13 +76,13 @@ namespace AlumniNetworkAPI.Services.EventServices
         #region Create
         public async Task CreateGroupEventInvitation(int eventId, int groupId)
         {
-           Event ev = _context.Events
+           Event ev = await _context.Events
                 .Include(e => e.Groups)
-                .FirstOrDefaultAsync(e => e.Id == eventId).Result;
+                .FirstOrDefaultAsync(e => e.Id == eventId);
 
-            Group group = _context.Groups
+            Group group = await _context.Groups
                 .Where(g => g.Id == groupId)
-                .FirstOrDefaultAsync().Result;
+                .FirstOrDefaultAsync();
 
             if (ev.Groups == null)
             {
@@ -93,7 +93,108 @@ namespace AlumniNetworkAPI.Services.EventServices
             await _context.SaveChangesAsync();
         }
 
+        public async Task CreateTopicEventInvitation(int eventId, int topicId)
+        {
+            Event ev = await _context.Events
+                 .Include(e => e.Topics)
+                 .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            Topic topic = await _context.Topics
+                .Where(g => g.Id == topicId)
+                .FirstOrDefaultAsync();
+
+            if (ev.Topics == null)
+            {
+                ev.Topics = new List<Topic>();
+            }
+
+            ev.Topics.Add(topic);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CreateUserEventInvitation(int eventId, int userId)
+        {
+            Event ev = await _context.Events
+                .Include(e => e.InvitedUsers)
+                .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            User user = await _context.Users
+                .Where(u => u.Id == userId)
+                .FirstOrDefaultAsync();   
+            
+            if (ev.InvitedUsers == null)
+            {
+                ev.InvitedUsers = new List<User>();
+            }
+
+            ev.InvitedUsers.Add(user);
+            await _context.SaveChangesAsync();
+        }
+        #region Delete
+        public async Task DeleteGroupEventInvitation(int eventId, int groupId)
+        {
+            Event ev = await _context.Events
+                 .Include(e => e.Groups)
+                 .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            Group group = await _context.Groups
+                .Where(g => g.Id == groupId)
+                .FirstOrDefaultAsync();
+
+            ev.Groups.Remove(group);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTopicEventInvitation(int eventId, int topicId)
+        {
+            Event ev = await _context.Events
+                 .Include(e => e.Topics)
+                 .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            Topic topic = await _context.Topics
+                .Where(t => t.Id == topicId)
+                .FirstOrDefaultAsync();
+
+            ev.Topics.Remove(topic);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserEventInvitation(int eventId, int userId)
+        {
+            Event ev = await _context.Events
+                 .Include(e => e.InvitedUsers)
+                 .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            User user = await _context.Users
+                .Where(t => t.Id == userId)
+                .FirstOrDefaultAsync();
+
+            ev.InvitedUsers.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CreateEventRSVP(int eventId, string keycloakId)
+        {
+            Event ev = await _context.Events
+                .Include(e => e.InvitedUsers)
+                .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            User user = await _context.Users
+                .Where(u => u.KeycloakId == keycloakId)
+                .FirstOrDefaultAsync();
+
+            if (ev.AcceptedUsers == null)
+            {
+                ev.AcceptedUsers = new List<User>();
+            }
+
+            ev.AcceptedUsers.Add(user);
+            await _context.SaveChangesAsync();
+        }
         #endregion
+
+        #endregion
+
         #region Helper-methods
         public async Task<Event> GetById(int id)
         {

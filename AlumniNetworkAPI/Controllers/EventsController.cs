@@ -80,7 +80,108 @@ namespace AlumniNetworkAPI.Controllers
             return NoContent();
         }
 
-        #endregion 
+        //POST: api/event/{eventId}/invite/topic/{topicId}
+        [HttpPost("{eventId}/invite/topic/{topicId}")]
+        public async Task<IActionResult> CreateTopicEventInvitation(int eventId, int topicId)
+        {
+            if (!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            try
+            {
+                await _eventService.CreateTopicEventInvitation(eventId, topicId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            return NoContent();
+        }
+
+        //POST: api/event/{eventId}/invite/user/{userId}
+        [HttpPost("{eventId}/invite/user/{userId}")]
+        public async Task<IActionResult> CreateUserEventInvitation(int eventId, int userId)
+        {
+            if (!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            try
+            {
+                await _eventService.CreateUserEventInvitation(eventId, userId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            return NoContent();
+        }
+
+        //POST: api/event/{eventId}/rsvp
+        [HttpPost("{eventId}/rsvp")]
+        public async Task<IActionResult> CreateEventRSVP(int eventId)
+        {
+            if (!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            try
+            {
+                string keycloakId = this.User.GetId();
+                await _eventService.CreateEventRSVP(eventId, keycloakId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            return NoContent();
+        }
+
+        #endregion
+
+        #region Delete
+        //Delete: api/event/{eventId}/invite/group/{groupId}
+        [HttpDelete("{eventId}/invite/group/{groupId}")]
+        public async Task<IActionResult> DeleteGroupEventInvitation(int eventId, int groupId)
+        {
+            if (!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            await _eventService.DeleteGroupEventInvitation(eventId, groupId);
+
+            return NoContent();
+        }
+
+        //Delete: api/event/{eventId}/invite/topic/{topicId}
+        [HttpDelete("{eventId}/invite/topic/{topicId}")]
+        public async Task<IActionResult> DeleteTopicEventInvitation(int eventId, int topicId)
+        {
+            if (!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            await _eventService.DeleteTopicEventInvitation(eventId, topicId);
+
+            return NoContent();
+        }
+
+
+        //Delete: api/event/{eventId}/invite/user/{userId}
+        [HttpDelete("{eventId}/invite/user/{userId}")]
+        public async Task<IActionResult> DeletUserEventInvitation(int eventId, int userId)
+        {
+            if (!_eventService.Exists(eventId))
+            {
+                return NotFound();
+            }
+            await _eventService.DeleteUserEventInvitation(eventId, userId);
+
+            return NoContent();
+        }
+
+        #endregion
 
         #region PUT / Update
         //PUT: api/events/{id}
