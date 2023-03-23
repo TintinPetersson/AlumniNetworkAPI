@@ -63,7 +63,7 @@ namespace AlumniNetworkAPI.Models.Domain
             //Relationships
             modelBuilder.Entity<Post>()
             .HasMany(e => e.Replies)
-            .WithOne(e => e.ParentPost)
+            .WithOne(e => e.Parent)
             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Post>()

@@ -13,5 +13,6 @@ namespace AlumniNetworkAPI.Services.PostServices
         Task<IEnumerable<Post>> GetEventPosts(int eventId, string? search = null, string? filter = null, int? limit = null, int? offset = null);
         Task UpdatePostAsync(Post post);
         Task<Post> AddPostAsync(Post post, string keycloakId);
+        Task<Post> AddReplyAsync(Post post, string keycloakId);
     }
 }

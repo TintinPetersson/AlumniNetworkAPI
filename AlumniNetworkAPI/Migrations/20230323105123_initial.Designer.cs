@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlumniNetworkAPI.Migrations
 {
     [DbContext(typeof(AlumniNetworkDbContext))]
-    [Migration("20230322201916_initial")]
+    [Migration("20230323105123_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -188,14 +188,13 @@ namespace AlumniNetworkAPI.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ParentPostId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RecieverId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -210,7 +209,7 @@ namespace AlumniNetworkAPI.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("ParentPostId");
+                    b.HasIndex("ParentId");
 
                     b.HasIndex("RecieverId");
 
@@ -224,8 +223,9 @@ namespace AlumniNetworkAPI.Migrations
                             Id = 1,
                             AuthorId = 1,
                             Body = "Hejsan svejsan",
+                            EventId = 2,
                             GroupId = 1,
-                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8824),
+                            LastUpdated = new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(452),
                             RecieverId = 1,
                             Title = "Maryams Dagbok",
                             TopicId = 1
@@ -236,7 +236,7 @@ namespace AlumniNetworkAPI.Migrations
                             AuthorId = 2,
                             Body = "Svejsan Hejsan",
                             GroupId = 2,
-                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8868),
+                            LastUpdated = new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(495),
                             RecieverId = 2,
                             Title = "Maryams Ica Lista",
                             TopicId = 2
@@ -247,7 +247,7 @@ namespace AlumniNetworkAPI.Migrations
                             AuthorId = 3,
                             Body = "Hej svej",
                             GroupId = 3,
-                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8871),
+                            LastUpdated = new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(497),
                             RecieverId = 3,
                             Title = "Maryams Hemliga bok",
                             TopicId = 1
@@ -258,7 +258,7 @@ namespace AlumniNetworkAPI.Migrations
                             AuthorId = 4,
                             Body = "Hemligt!",
                             GroupId = 4,
-                            LastUpdated = new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8873),
+                            LastUpdated = new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(500),
                             RecieverId = 3,
                             Title = "Filips äventyr",
                             TopicId = 3
@@ -812,9 +812,9 @@ namespace AlumniNetworkAPI.Migrations
                         .WithMany("Posts")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("AlumniNetworkAPI.Models.Domain.Post", "ParentPost")
+                    b.HasOne("AlumniNetworkAPI.Models.Domain.Post", "Parent")
                         .WithMany("Replies")
-                        .HasForeignKey("ParentPostId")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("AlumniNetworkAPI.Models.Domain.User", "Reciever")
@@ -832,7 +832,7 @@ namespace AlumniNetworkAPI.Migrations
 
                     b.Navigation("Group");
 
-                    b.Navigation("ParentPost");
+                    b.Navigation("Parent");
 
                     b.Navigation("Reciever");
 
