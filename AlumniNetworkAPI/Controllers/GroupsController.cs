@@ -118,8 +118,10 @@ namespace AlumniNetworkAPI.Controllers
             
             try
             {
-                await _groupService.AddUserToGroupAsync(groupId, keycloakId, userId);
-                return Ok($"User added to group");
+                
+                var group = await _groupService.AddUserToGroupAsync(groupId, keycloakId, userId);
+                var groupDto = _mapper.Map<GroupReadDto>(group);
+                return Ok(groupDto);
             }
             catch (KeyNotFoundException)
             {
