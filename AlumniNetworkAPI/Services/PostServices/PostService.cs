@@ -40,8 +40,9 @@ namespace AlumniNetworkAPI.Services.PostServices
         {
             var query = _context.Posts
                 .Include(p => p.Group)
+                .Include(c => c.Author).ThenInclude(x => x.RecievedPosts)
                 .Include(p => p.Replies).ThenInclude(x => x.Author)
-                .Where(p => p.RecieverId == id && p.AuthorId == id);
+                .Where(p => p.AuthorId == id);
 
             return await queryParameters(query, search, filter, limit, offset).ToListAsync();
         }
@@ -102,61 +103,56 @@ namespace AlumniNetworkAPI.Services.PostServices
             {
                 Topic audienceToPostTo = _context.Topics.First(t => t.Id == domainPost.TopicId);
                 ICollection<Topic>? audienceRelation = user.Topics;
-                if (!audienceRelation.Contains(audienceToPostTo))
-                {
-                    throw new Exception();
-                }
             }
             else if (domainPost.GroupId != null)
             {
                 Group audienceToPostTo = _context.Groups.First(g => g.Id == domainPost.GroupId);
                 ICollection<Group>? audienceRelation = user.Groups;
-                if (!audienceRelation.Contains(audienceToPostTo))
-                {
-                    throw new Exception();
-                }
             }
-            else if (domainPost.RecieverId != null || domainPost.ParentId != null)
-            {
-                if (domainPost.RecieverId == user.Id)
-                {
-                    throw new Exception();
-                }
-            }
-            else
-            {
-                throw new KeyNotFoundException();
-            }
+            //else
+            //{
+            //    throw new KeyNotFoundException();
+            //}
 
-            user.AuthoredPosts = new List<Post>
+            if(domainPost.RecieverId != null)
+            {
+                var parentUser = await _context.Users.FirstAsync(u => u.Id == domainPost.RecieverId);
+
+                domainPost.AuthorId = user.Id;
+                domainPost.Title = $"Reply to {parentUser.Username}";
+
+                parentUser.RecievedPosts = new List<Post>
             {
                 domainPost
             };
-            domainPost.AuthorId = user.Id;
-            _context.Posts.Add(domainPost);
-            _context.Entry(user).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return domainPost;
-        }
 
-        public async Task<Post> AddReplyAsync(Post post, string keycloakId)
-        {
-            User user = _context.Users
-               .Include(u => u.Groups)
-               .Include(u => u.Topics)
-               .First(u => u.KeycloakId == keycloakId);
-
-            var parentUser = await _context.Users.FirstAsync(u => u.Id == post.RecieverId);
-            parentUser.RecievedPosts = new List<Post>
+                _context.Entry(parentUser).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return domainPost;
+            }
+            else
             {
-                post,
+                user.AuthoredPosts = new List<Post>
+            {
+                domainPost
             };
-
-            post.AuthorId = user.Id;
-            _context.Entry(parentUser).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return post;
+                domainPost.AuthorId = user.Id;
+                _context.Posts.Add(domainPost);
+                _context.Entry(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return domainPost;
+            }
         }
+
+        //public async Task<Post> AddReplyAsync(Post post, string keycloakId)
+        //{
+        //    User user = _context.Users
+        //       .Include(u => u.Groups)
+        //       .Include(u => u.Topics)
+        //       .First(u => u.KeycloakId == keycloakId);
+
+           
+        //}
         #endregion
         #region Helper functions
         private static IQueryable<Post> queryParameters(IQueryable<Post> query, string? search = null, string? filter = null, int? limit = null, int? offset = null)
