@@ -10,6 +10,7 @@ namespace AlumniNetworkAPI.Profiles
         {
             CreateMap<PostCreateDto, Post>();
             CreateMap<PostEditDto, Post>();
+            CreateMap<PostReplyCreateDto, Post>();
             CreateMap<Post, PostReadDto>();
             CreateMap<Post, PostGroupReadDTO>();
         }

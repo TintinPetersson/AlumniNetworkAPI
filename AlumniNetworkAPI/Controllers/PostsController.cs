@@ -64,7 +64,7 @@ namespace AlumniNetworkAPI.Controllers
         /// <param name="filter">Sort posts by filters: descending or ascending.</param>
         /// <param name="limit">The maximum number of posts to return in the response.</param>
         /// <param name="offset">Specify the starting point of a subset of posts within the overall list of posts, effectively skipping a certain number of posts.</param>
-        [HttpGet("user")]
+        [HttpGet("messages/{id}")]
         public async Task<ActionResult<IEnumerable<PostReadDto>>> GetRecievedPosts([FromQuery] string? search = null, [FromQuery] string? filter = null, [FromQuery] int? limit = null, [FromQuery] int? offset = null)
         {
             var keycloakId = this.User.GetId();
@@ -266,6 +266,37 @@ namespace AlumniNetworkAPI.Controllers
                 return Forbid();
             }
         }
+        /// <summary>
+        ///     Updates a specified post. 
+        /// </summary>
+        /// <remarks>
+        ///     Accepts appropriate parameters in the request body as application/json.
+        /// </remarks>
+        // [TODO]: handle Attempts to post to an audience for which the requesting user is not a member will result in a 403 Forbidden response.
+        [HttpPost("reply")]
+        public async Task<ActionResult<Post>> AddReply(PostReplyCreateDto post)
+        {
+            string keycloakId = this.User.GetId();
+
+            Post domainPost = _mapper.Map<Post>(post);
+            domainPost.LastUpdated = DateTime.Now;
+            try
+            {
+                domainPost = await _postService.AddReplyAsync(domainPost, keycloakId);
+                return CreatedAtAction("GetPosts",
+                    new { id = domainPost.Id },
+                    _mapper.Map<PostReadDto>(domainPost));
+            }
+            catch (KeyNotFoundException)
+            {
+                return BadRequest("Invalid audience");
+            }
+            catch (Exception)
+            {
+                return Forbid();
+            }
+        }
+
         #endregion
         #endregion
     }

@@ -3,6 +3,7 @@ using AlumniNetworkAPI.Models.Domain;
 using AlumniNetworkAPI.Models.Dtos.Groups;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Text;
 
 namespace AlumniNetworkAPI.Services.GroupServices
 {
@@ -68,19 +69,25 @@ namespace AlumniNetworkAPI.Services.GroupServices
 
         public async Task AddUserToGroupAsync(int groupId, string? keycloakId, int? userId)
         {
+            bool isMember = false;
             var user = new User();
-            if (userId == null)
+
+            if (!userId.HasValue)
                 user = await _context.Users.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId); 
             else
+            {
                 user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                isMember= true;
+            }
             
-
+            
             var group = await _context.Groups.Include(t => t.Users).FirstOrDefaultAsync(t => t.Id == groupId);
            
 
-            if (group.IsPrivate && !group.Users.Any(u => u.Id == user.Id))
-                throw new NoAccessToGroupException(user.Id, group.Id);    
-
+            if (group.IsPrivate && !group.Users.Any(u => u.Id == user.Id) || !isMember && userId.HasValue )
+                throw new NoAccessToGroupException(user.Id, group.Id);
+           
+            isMember = false;
             group.Users.Add(user);
             await _context.SaveChangesAsync();
         }

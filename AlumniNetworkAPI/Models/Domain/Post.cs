@@ -8,7 +8,7 @@ namespace AlumniNetworkAPI.Models.Domain
         [Required]
         public DateTime LastUpdated { get; set; }
         [MaxLength(255)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public string Body { get; set; }
 
 
@@ -27,8 +27,8 @@ namespace AlumniNetworkAPI.Models.Domain
         public virtual int? EventId { get; set; }
         public virtual Event? Event { get; set; }
 
-        public virtual int? ParentPostId { get; set; }
-        public virtual Post? ParentPost { get; set; }
+        public virtual int? ParentId { get; set; }
+        public virtual Post? Parent { get; set; }
 
         public virtual ICollection<Post>? Replies { get; set; }
     }

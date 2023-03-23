@@ -213,14 +213,14 @@ namespace AlumniNetworkAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
                     RecieverId = table.Column<int>(type: "int", nullable: true),
                     TopicId = table.Column<int>(type: "int", nullable: true),
                     GroupId = table.Column<int>(type: "int", nullable: true),
                     EventId = table.Column<int>(type: "int", nullable: true),
-                    ParentPostId = table.Column<int>(type: "int", nullable: true)
+                    ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -236,8 +236,8 @@ namespace AlumniNetworkAPI.Migrations
                         principalTable: "Groups",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Posts_Posts_ParentPostId",
-                        column: x => x.ParentPostId,
+                        name: "FK_Posts_Posts_ParentId",
+                        column: x => x.ParentId,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -398,13 +398,13 @@ namespace AlumniNetworkAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "Posts",
-                columns: new[] { "Id", "AuthorId", "Body", "EventId", "GroupId", "LastUpdated", "ParentPostId", "RecieverId", "Title", "TopicId" },
+                columns: new[] { "Id", "AuthorId", "Body", "EventId", "GroupId", "LastUpdated", "ParentId", "RecieverId", "Title", "TopicId" },
                 values: new object[,]
                 {
-                    { 1, 1, "Hejsan svejsan", null, 1, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8824), null, 1, "Maryams Dagbok", 1 },
-                    { 2, 2, "Svejsan Hejsan", null, 2, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8868), null, 2, "Maryams Ica Lista", 2 },
-                    { 3, 3, "Hej svej", null, 3, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8871), null, 3, "Maryams Hemliga bok", 1 },
-                    { 4, 4, "Hemligt!", null, 4, new DateTime(2023, 3, 22, 21, 19, 16, 259, DateTimeKind.Local).AddTicks(8873), null, 3, "Filips äventyr", 3 }
+                    { 1, 1, "Hejsan svejsan", 2, 1, new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(452), null, 1, "Maryams Dagbok", 1 },
+                    { 2, 2, "Svejsan Hejsan", null, 2, new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(495), null, 2, "Maryams Ica Lista", 2 },
+                    { 3, 3, "Hej svej", null, 3, new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(497), null, 3, "Maryams Hemliga bok", 1 },
+                    { 4, 4, "Hemligt!", null, 4, new DateTime(2023, 3, 23, 11, 51, 22, 865, DateTimeKind.Local).AddTicks(500), null, 3, "Filips äventyr", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -496,9 +496,9 @@ namespace AlumniNetworkAPI.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_ParentPostId",
+                name: "IX_Posts_ParentId",
                 table: "Posts",
-                column: "ParentPostId");
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_RecieverId",
