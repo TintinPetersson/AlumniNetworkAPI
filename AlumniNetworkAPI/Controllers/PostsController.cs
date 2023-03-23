@@ -267,7 +267,7 @@ namespace AlumniNetworkAPI.Controllers
             }
         }
         /// <summary>
-        ///     Updates a specified post. 
+        ///     Updates a specified post, reply. 
         /// </summary>
         /// <remarks>
         ///     Accepts appropriate parameters in the request body as application/json.
@@ -293,7 +293,7 @@ namespace AlumniNetworkAPI.Controllers
             }
             catch (Exception)
             {
-                return Forbid();
+                return Forbid("Error my dude");
             }
         }
 

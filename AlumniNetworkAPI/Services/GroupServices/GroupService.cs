@@ -67,29 +67,19 @@ namespace AlumniNetworkAPI.Services.GroupServices
             return newGroup;
         }
 
-        public async Task AddUserToGroupAsync(int groupId, string? keycloakId, int? userId)
+        public async Task<Group> AddUserToGroupAsync(int groupId, string? keycloakId, int? userId)
         {
-            bool isMember = false;
-            var user = new User();
-
-            if (!userId.HasValue)
-                user = await _context.Users.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId); 
-            else
-            {
-                user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                isMember= true;
-            }
-            
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId); 
             
             var group = await _context.Groups.Include(t => t.Users).FirstOrDefaultAsync(t => t.Id == groupId);
            
 
-            if (group.IsPrivate && !group.Users.Any(u => u.Id == user.Id) || !isMember && userId.HasValue )
+            if (group.IsPrivate && group.Users.Any(u => u.Id == user.Id))
                 throw new NoAccessToGroupException(user.Id, group.Id);
            
-            isMember = false;
             group.Users.Add(user);
             await _context.SaveChangesAsync();
+            return group;
         }
         #endregion
     }
