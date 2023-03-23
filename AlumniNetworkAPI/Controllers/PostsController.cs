@@ -273,29 +273,30 @@ namespace AlumniNetworkAPI.Controllers
         ///     Accepts appropriate parameters in the request body as application/json.
         /// </remarks>
         // [TODO]: handle Attempts to post to an audience for which the requesting user is not a member will result in a 403 Forbidden response.
-        [HttpPost("reply")]
-        public async Task<ActionResult<Post>> AddReply(PostReplyCreateDto post)
-        {
-            string keycloakId = this.User.GetId();
+        //[HttpPost("reply")]
+        //public async Task<ActionResult<Post>> AddReply(PostReplyCreateDto post)
+        //{
+        //    string keycloakId = this.User.GetId();
 
-            Post domainPost = _mapper.Map<Post>(post);
-            domainPost.LastUpdated = DateTime.Now;
-            try
-            {
-                domainPost = await _postService.AddReplyAsync(domainPost, keycloakId);
-                return CreatedAtAction("GetPosts",
-                    new { id = domainPost.Id },
-                    _mapper.Map<PostReadDto>(domainPost));
-            }
-            catch (KeyNotFoundException)
-            {
-                return BadRequest("Invalid audience");
-            }
-            catch (Exception)
-            {
-                return Forbid("Error my dude");
-            }
-        }
+        //    Post domainPost = _mapper.Map<Post>(post);
+        //    domainPost.LastUpdated = DateTime.Now;
+        //    try
+        //    {
+        //        domainPost = await _postService.AddReplyAsync(domainPost, keycloakId);
+        //        return CreatedAtAction("GetPosts",
+        //            new { id = domainPost.Id },
+        //            _mapper.Map<PostReadDto>(domainPost));
+        //    }
+        //    catch (KeyNotFoundException)
+        //    {
+        //        return BadRequest("Invalid audience");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Forbid();
+        //    }
+        //}
+
 
         #endregion
         #endregion
