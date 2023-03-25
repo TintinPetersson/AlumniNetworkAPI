@@ -7,6 +7,7 @@ using AlumniNetworkAPI.Models.Dtos.Groups;
 using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlumniNetworkAPI.Controllers
 {
@@ -78,7 +79,7 @@ namespace AlumniNetworkAPI.Controllers
         /// Accepts appropriate parameters in the request body as application/json.
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult<Group>> AddTopic(GroupCreateDto group)
+        public async Task<ActionResult<Group>> AddGroup(GroupCreateDto group)
         {
             string keycloakId = this.User.GetId();
             Group newGroup = _mapper.Map<Group>(group);

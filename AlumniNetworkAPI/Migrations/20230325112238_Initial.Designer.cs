@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlumniNetworkAPI.Migrations
 {
     [DbContext(typeof(AlumniNetworkDbContext))]
-    [Migration("20230323134531_inital")]
-    partial class inital
+    [Migration("20230325112238_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -225,8 +225,7 @@ namespace AlumniNetworkAPI.Migrations
                             Body = "Hejsan svejsan",
                             EventId = 2,
                             GroupId = 1,
-                            LastUpdated = new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1283),
-                            RecieverId = 1,
+                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5211),
                             Title = "Maryams Dagbok",
                             TopicId = 1
                         },
@@ -236,8 +235,7 @@ namespace AlumniNetworkAPI.Migrations
                             AuthorId = 2,
                             Body = "Svejsan Hejsan",
                             GroupId = 2,
-                            LastUpdated = new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1322),
-                            RecieverId = 2,
+                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5249),
                             Title = "Maryams Ica Lista",
                             TopicId = 2
                         },
@@ -247,8 +245,7 @@ namespace AlumniNetworkAPI.Migrations
                             AuthorId = 3,
                             Body = "Hej svej",
                             GroupId = 3,
-                            LastUpdated = new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1325),
-                            RecieverId = 3,
+                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5252),
                             Title = "Maryams Hemliga bok",
                             TopicId = 1
                         },
@@ -258,8 +255,7 @@ namespace AlumniNetworkAPI.Migrations
                             AuthorId = 4,
                             Body = "Hemligt!",
                             GroupId = 4,
-                            LastUpdated = new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1328),
-                            RecieverId = 3,
+                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5254),
                             Title = "Filips äventyr",
                             TopicId = 3
                         });

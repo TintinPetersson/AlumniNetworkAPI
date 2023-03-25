@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AlumniNetworkAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -401,10 +401,10 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "AuthorId", "Body", "EventId", "GroupId", "LastUpdated", "ParentId", "RecieverId", "Title", "TopicId" },
                 values: new object[,]
                 {
-                    { 1, 1, "Hejsan svejsan", 2, 1, new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1283), null, 1, "Maryams Dagbok", 1 },
-                    { 2, 2, "Svejsan Hejsan", null, 2, new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1322), null, 2, "Maryams Ica Lista", 2 },
-                    { 3, 3, "Hej svej", null, 3, new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1325), null, 3, "Maryams Hemliga bok", 1 },
-                    { 4, 4, "Hemligt!", null, 4, new DateTime(2023, 3, 23, 14, 45, 31, 561, DateTimeKind.Local).AddTicks(1328), null, 3, "Filips äventyr", 3 }
+                    { 1, 1, "Hejsan svejsan", 2, 1, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5211), null, null, "Maryams Dagbok", 1 },
+                    { 2, 2, "Svejsan Hejsan", null, 2, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5249), null, null, "Maryams Ica Lista", 2 },
+                    { 3, 3, "Hej svej", null, 3, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5252), null, null, "Maryams Hemliga bok", 1 },
+                    { 4, 4, "Hemligt!", null, 4, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5254), null, null, "Filips äventyr", 3 }
                 });
 
             migrationBuilder.InsertData(

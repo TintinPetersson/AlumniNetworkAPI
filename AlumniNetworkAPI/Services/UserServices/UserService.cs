@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using AlumniNetworkAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 
 namespace AlumniNetworkAPI.Services.UserServices
 {
@@ -25,6 +26,11 @@ namespace AlumniNetworkAPI.Services.UserServices
                 return await PostAsync(keycloakId, username);
             }
             return user;
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByName()
+        {
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(int id)

@@ -59,7 +59,21 @@ namespace AlumniNetworkAPI.Services.GroupServices
         public async Task<Group> AddGroupAsync(Group newGroup, string keycloakId)
         {
             User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
-            var users = new List<User>{ user };
+
+            var users = new List<User> { user };
+
+            foreach (var userInGroup in newGroup.Users)
+            {
+                if (user.Id != userInGroup.Id)
+                {
+                    var userI = await _context.Users.FindAsync(userInGroup.Id);
+                    if (userI != null)
+                        users.Add(userI);
+                    
+                    else
+                        throw new Exception($"User with id {userInGroup.Id} does not exist.");        
+                }
+            }
 
             newGroup.Users = users;
             await _context.Groups.AddAsync(newGroup);
