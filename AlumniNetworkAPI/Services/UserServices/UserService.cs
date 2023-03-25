@@ -23,7 +23,12 @@ namespace AlumniNetworkAPI.Services.UserServices
 
             if(user == null)
             {
-                return await PostAsync(keycloakId, username);
+                user = await _context.Users.SingleOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+                if (user == null)
+                    return await PostAsync(keycloakId, username.ToLower());
+               
+                user.KeycloakId = keycloakId;
+                await _context.SaveChangesAsync();
             }
             return user;
         }

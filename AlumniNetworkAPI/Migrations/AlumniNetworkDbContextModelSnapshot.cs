@@ -68,33 +68,55 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             Id = 1,
                             AllowGuests = true,
-                            BannerImage = "Image",
-                            Description = "Bild.png",
+                            BannerImage = "machinelearning.jpg",
+                            Description = "Join us for an online workshop on the basics of machine learning. Learn about various algorithms and techniques used in machine learning.",
                             EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Webinar",
+                            Name = "Introduction to Machine Learning",
                             StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             AllowGuests = true,
-                            BannerImage = "Image",
-                            Description = "Bild.png",
+                            BannerImage = "networking.jpg",
+                            Description = "Join us for an evening of networking and socializing with fellow alumni. Make new connections, catch up with old friends, and expand your professional network.",
                             EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "AW",
+                            Name = "Alumni Networking Mixer",
                             StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             AllowGuests = true,
-                            BannerImage = "Image",
-                            Description = "Bild.png",
+                            BannerImage = "communityservice.jpg",
+                            Description = "Join us for a community service project to give back to the community. Help us clean up a local park and make it a better place for everyone.",
                             EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Meet-up",
+                            Name = "Community Service Project",
+                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AllowGuests = true,
+                            BannerImage = "homecoming.jpg",
+                            Description = "Join us for the annual alumni homecoming event. Reconnect with old friends, meet new ones, and celebrate the university's legacy.",
+                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Alumni Homecoming 2023",
+                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AllowGuests = false,
+                            BannerImage = "careerfair.jpg",
+                            Description = "Looking for new job opportunities? Join us for the annual career fair, where you can network with employers and learn about job openings.",
+                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Career Fair 2023",
                             StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -127,37 +149,51 @@ namespace AlumniNetworkAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "ASP.NET",
+                            Description = "A group for alumni who are interested in sports and fitness.",
                             IsPrivate = true,
-                            Name = ".Net"
+                            Name = "Alumni Sports Club"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Java and Javascript",
-                            IsPrivate = true,
-                            Name = "Java"
+                            Description = "A group for alumni who are interested in business networking and entrepreneurship.",
+                            IsPrivate = false,
+                            Name = "Business Networking Group"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Mikael and Erik",
+                            Description = "A group for alumni who studied engineering at the university.",
                             IsPrivate = false,
-                            Name = "Skövde-group"
+                            Name = "Engineering Alumni Group"
                         },
                         new
                         {
                             Id = 4,
-                            Description = "Experis GBG",
-                            IsPrivate = true,
-                            Name = "GbG-group"
+                            Description = "An association for all alumni of the law school.",
+                            IsPrivate = false,
+                            Name = "Law School Alumni Association"
                         },
                         new
                         {
                             Id = 5,
-                            Description = "Skåne",
+                            Description = "An association for all alumni of the medical school.",
                             IsPrivate = false,
-                            Name = "Varberg-group"
+                            Name = "Medical Alumni Association"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "A group for alumni who love to read and discuss books.",
+                            IsPrivate = true,
+                            Name = "Alumni Book Club"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "A group for alumni who love to travel and explore new places.",
+                            IsPrivate = true,
+                            Name = "Alumni Travel Group"
                         });
                 });
 
@@ -219,42 +255,56 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             Id = 1,
                             AuthorId = 1,
-                            Body = "Hejsan svejsan",
-                            EventId = 2,
+                            Body = "As an electrical engineering major, I have learned a lot during my time in college. Here are some tips for success: 1. Stay organized and manage your time well. 2. Take advantage of networking opportunities. 3. Get hands-on experience through internships or research. 4. Stay up-to-date with the latest technologies and trends. Good luck!",
+                            EventId = 1,
                             GroupId = 1,
-                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5211),
-                            Title = "Maryams Dagbok",
+                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3009),
+                            Title = "Tips for Electrical Engineering Students",
                             TopicId = 1
                         },
                         new
                         {
                             Id = 2,
                             AuthorId = 2,
-                            Body = "Svejsan Hejsan",
+                            Body = "If you're planning to take the bar exam, it's important to start preparing early. Here are some tips: 1. Create a study schedule and stick to it. 2. Take practice exams to get familiar with the format and types of questions. 3. Join a study group to stay motivated and get support. 4. Take care of yourself and manage your stress. You can do it!",
+                            EventId = 2,
                             GroupId = 2,
-                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5249),
-                            Title = "Maryams Ica Lista",
+                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3044),
+                            Title = "Preparing for the Bar Exam",
                             TopicId = 2
                         },
                         new
                         {
                             Id = 3,
                             AuthorId = 3,
-                            Body = "Hej svej",
+                            Body = "Starting a small business can be challenging, but also very rewarding. Here are some tips to help you get started: 1. Conduct market research to identify a need for your product or service. 2. Create a business plan and set clear goals. 3. Secure funding and resources. 4. Build a strong team and culture. Good luck on your entrepreneurial journey!",
+                            EventId = 3,
                             GroupId = 3,
-                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5252),
-                            Title = "Maryams Hemliga bok",
-                            TopicId = 1
+                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3047),
+                            Title = "Tips for Starting a Small Business",
+                            TopicId = 3
                         },
                         new
                         {
                             Id = 4,
                             AuthorId = 4,
-                            Body = "Hemligt!",
+                            Body = "As a medical resident, I have had many challenges and opportunities for growth. Here are some things I have learned: 1. Time management is key. 2. Communication skills are critical. 3. Self-care is important to avoid burnout. 4. Learning is a lifelong process. Best of luck to all medical residents!",
+                            EventId = 1,
                             GroupId = 4,
-                            LastUpdated = new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5254),
-                            Title = "Filips äventyr",
-                            TopicId = 3
+                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3049),
+                            Title = "My Experience as a Medical Resident",
+                            TopicId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AuthorId = 5,
+                            Body = "STEM education is crucial for the future of our society and economy. Here are some reasons why: 1. STEM careers are in high demand and offer high salaries. 2. STEM skills are needed for innovation and problem-solving. 3. STEM education can promote diversity and social equality. Let's encourage more young people to pursue STEM education!",
+                            EventId = 4,
+                            GroupId = 1,
+                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3052),
+                            Title = "The Importance of STEM Education",
+                            TopicId = 1
                         });
                 });
 
@@ -283,20 +333,32 @@ namespace AlumniNetworkAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Keycloak is an open source software product to allow single sign-on with Identity",
-                            Name = "Keycloak"
+                            Description = "Topics related to engineering, including mechanical, electrical, civil, and chemical engineering.",
+                            Name = "Engineering"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "JavaScript is a high-level, often just-in-time compiled language that conforms to the ECMAScript standard.",
-                            Name = "JavaScript"
+                            Description = "Topics related to law, including civil law, criminal law, international law, and human rights.",
+                            Name = "Law"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Tailwind CSS is an open source CSS framework.",
-                            Name = "Tailwind"
+                            Description = "Topics related to business, including accounting, finance, marketing, and management.",
+                            Name = "Business"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Topics related to medicine, including anatomy, physiology, pharmacology, and pathology.",
+                            Name = "Medicine"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Topics related to education, including teaching methods, curriculum design, educational psychology, and special education.",
+                            Name = "Education"
                         });
                 });
 
@@ -343,92 +405,92 @@ namespace AlumniNetworkAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Bio = "Is from GBG",
-                            FunFact = "Formula",
-                            KeycloakId = "2ff40a61-2dea-418b-ad08-06aa0e0498fb",
+                            Bio = "Software engineer by profession. Love to play football in free time.",
+                            FunFact = "I can solve a Rubik's cube in under a minute.",
+                            KeycloakId = "7a2a4108-21b7-4a7b-9e15-415262ef547d",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Filip"
+                            Status = "Working",
+                            Username = "John"
                         },
                         new
                         {
                             Id = 2,
-                            Bio = "ya",
-                            FunFact = "Big Formula",
+                            Bio = "Marketing professional who loves to read and travel.",
+                            FunFact = "I have visited 10 countries in the last year.",
                             KeycloakId = "f428f142-cae0-4429-b846-991c67fc4d4f",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Tommy"
+                            Status = "Working",
+                            Username = "Jane"
                         },
                         new
                         {
                             Id = 3,
-                            Bio = "Karate",
-                            FunFact = "Artist",
-                            KeycloakId = "",
+                            Bio = "Computer science major at Chalmers University. Enjoys playing video games and watching sci-fi movies.",
+                            FunFact = "I have won several programming competitions.",
+                            KeycloakId = "5da8c3d6-3edc-4ff4-9f80-d75a35ca470c",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Maryam"
+                            Status = "Student",
+                            Username = "Alice"
                         },
                         new
                         {
                             Id = 4,
-                            Bio = "Varberg",
-                            FunFact = ".NET utvecklare",
-                            KeycloakId = "",
+                            Bio = "Studying psychology at Yale University. Passionate about music and plays the guitar.",
+                            FunFact = "I can play the guitar upside down and backwards.",
+                            KeycloakId = "82070311-b1ca-4828-bb68-9a62b957361e",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "TinTin"
+                            Status = "Student",
+                            Username = "Bob"
                         },
                         new
                         {
                             Id = 5,
-                            Bio = "Jag älskar skövde",
-                            FunFact = "Bestämd",
-                            KeycloakId = "",
+                            Bio = "Accountant by profession. Loves to hike and explore nature.",
+                            FunFact = "I have climbed Mount Kilimanjaro.",
+                            KeycloakId = "4a7663b6-6940-46c3-86ef-659f014ae8d1",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Mikael"
+                            Status = "Working",
+                            Username = "Sarah"
                         },
                         new
                         {
                             Id = 6,
-                            Bio = "Jag älskar också skövde",
-                            FunFact = "Gillar att koda",
-                            KeycloakId = "",
+                            Bio = "Sales executive who enjoys playing basketball and cooking.",
+                            FunFact = "I have cooked for a Michelin-starred chef.",
+                            KeycloakId = "b6781ded-8de2-416f-b03b-0fade74353fe",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Erik"
+                            Status = "Working",
+                            Username = "David"
                         },
                         new
                         {
                             Id = 7,
-                            Bio = "Jag får andra att skratta",
-                            FunFact = "React är min grej",
-                            KeycloakId = "",
+                            Bio = "Studying medicine at LMN University. Enjoys practicing yoga and volunteering at a local hospital.",
+                            FunFact = "I can hold a handstand for over a minute.",
+                            KeycloakId = "1cf5b92c-a998-41e0-9ad2-d7c2ff1c2673",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Alexander"
+                            Status = "Student",
+                            Username = "Emily"
                         },
                         new
                         {
                             Id = 8,
-                            Bio = "Jag gillar promenader",
-                            FunFact = "Bra på Frontend",
-                            KeycloakId = "",
+                            Bio = "Studying finance at PQR College. Enjoys playing tennis and watching documentaries.",
+                            FunFact = "I have won several tennis tournaments in my city.",
+                            KeycloakId = "cd42f358-b591-4f7b-a6d3-4bd8e0b840af",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Amanda"
+                            Status = "Student",
+                            Username = "Chris"
                         },
                         new
                         {
                             Id = 9,
-                            Bio = "Jag gillar promenader",
-                            FunFact = "Bra på Frontend",
-                            KeycloakId = "qweqwe",
+                            Bio = "Graphic designer by profession. Enjoys painting and hiking on weekends.",
+                            FunFact = "I have exhibited my paintings in several art galleries.",
+                            KeycloakId = "f0b6c858-24bc-4d03-b89e-6269f8c43241",
                             Picture = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-                            Status = "",
-                            Username = "Manda"
+                            Status = "Working",
+                            Username = "Avery"
                         });
                 });
 
@@ -466,6 +528,16 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             GroupsId = 3,
                             EventsId = 2
+                        },
+                        new
+                        {
+                            GroupsId = 5,
+                            EventsId = 4
+                        },
+                        new
+                        {
+                            GroupsId = 6,
+                            EventsId = 5
                         });
                 });
 
@@ -491,13 +563,28 @@ namespace AlumniNetworkAPI.Migrations
                         },
                         new
                         {
-                            TopicsId = 2,
-                            EventsId = 3
+                            TopicsId = 5,
+                            EventsId = 2
                         },
                         new
                         {
                             TopicsId = 3,
-                            EventsId = 1
+                            EventsId = 3
+                        },
+                        new
+                        {
+                            TopicsId = 4,
+                            EventsId = 4
+                        },
+                        new
+                        {
+                            TopicsId = 2,
+                            EventsId = 5
+                        },
+                        new
+                        {
+                            TopicsId = 4,
+                            EventsId = 5
                         });
                 });
 
@@ -564,7 +651,7 @@ namespace AlumniNetworkAPI.Migrations
                         new
                         {
                             GroupId = 2,
-                            UserId = 1
+                            UserId = 4
                         },
                         new
                         {
@@ -590,6 +677,31 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             GroupId = 5,
                             UserId = 2
+                        },
+                        new
+                        {
+                            GroupId = 5,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            GroupId = 6,
+                            UserId = 6
+                        },
+                        new
+                        {
+                            GroupId = 6,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            GroupId = 7,
+                            UserId = 8
+                        },
+                        new
+                        {
+                            GroupId = 7,
+                            UserId = 9
                         });
                 });
 
@@ -692,13 +804,13 @@ namespace AlumniNetworkAPI.Migrations
                         },
                         new
                         {
-                            UserId = 8,
+                            UserId = 4,
                             TopicId = 2
                         },
                         new
                         {
-                            UserId = 4,
-                            TopicId = 2
+                            UserId = 9,
+                            TopicId = 3
                         },
                         new
                         {
@@ -708,12 +820,12 @@ namespace AlumniNetworkAPI.Migrations
                         new
                         {
                             UserId = 7,
-                            TopicId = 3
+                            TopicId = 4
                         },
                         new
                         {
                             UserId = 8,
-                            TopicId = 3
+                            TopicId = 5
                         });
                 });
 
@@ -776,6 +888,36 @@ namespace AlumniNetworkAPI.Migrations
                         {
                             UserId = 2,
                             EventId = 3
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            EventId = 4
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            EventId = 4
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            EventId = 4
+                        },
+                        new
+                        {
+                            UserId = 8,
+                            EventId = 5
+                        },
+                        new
+                        {
+                            UserId = 9,
+                            EventId = 5
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            EventId = 5
                         });
                 });
 

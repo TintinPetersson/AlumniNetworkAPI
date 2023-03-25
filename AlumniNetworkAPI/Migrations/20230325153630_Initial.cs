@@ -313,9 +313,11 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "AllowGuests", "AuthorId", "BannerImage", "Description", "EndTime", "LastUpdated", "Name", "StartTime" },
                 values: new object[,]
                 {
-                    { 1, true, null, "Image", "Bild.png", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Webinar", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, true, null, "Image", "Bild.png", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "AW", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, true, null, "Image", "Bild.png", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Meet-up", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, true, null, "machinelearning.jpg", "Join us for an online workshop on the basics of machine learning. Learn about various algorithms and techniques used in machine learning.", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Introduction to Machine Learning", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, true, null, "networking.jpg", "Join us for an evening of networking and socializing with fellow alumni. Make new connections, catch up with old friends, and expand your professional network.", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Alumni Networking Mixer", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, true, null, "communityservice.jpg", "Join us for a community service project to give back to the community. Help us clean up a local park and make it a better place for everyone.", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Community Service Project", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, true, null, "homecoming.jpg", "Join us for the annual alumni homecoming event. Reconnect with old friends, meet new ones, and celebrate the university's legacy.", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Alumni Homecoming 2023", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, false, null, "careerfair.jpg", "Looking for new job opportunities? Join us for the annual career fair, where you can network with employers and learn about job openings.", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Career Fair 2023", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -323,11 +325,13 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "Description", "IsPrivate", "Name" },
                 values: new object[,]
                 {
-                    { 1, "ASP.NET", true, ".Net" },
-                    { 2, "Java and Javascript", true, "Java" },
-                    { 3, "Mikael and Erik", false, "Skövde-group" },
-                    { 4, "Experis GBG", true, "GbG-group" },
-                    { 5, "Skåne", false, "Varberg-group" }
+                    { 1, "A group for alumni who are interested in sports and fitness.", true, "Alumni Sports Club" },
+                    { 2, "A group for alumni who are interested in business networking and entrepreneurship.", false, "Business Networking Group" },
+                    { 3, "A group for alumni who studied engineering at the university.", false, "Engineering Alumni Group" },
+                    { 4, "An association for all alumni of the law school.", false, "Law School Alumni Association" },
+                    { 5, "An association for all alumni of the medical school.", false, "Medical Alumni Association" },
+                    { 6, "A group for alumni who love to read and discuss books.", true, "Alumni Book Club" },
+                    { 7, "A group for alumni who love to travel and explore new places.", true, "Alumni Travel Group" }
                 });
 
             migrationBuilder.InsertData(
@@ -335,9 +339,11 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Keycloak is an open source software product to allow single sign-on with Identity", "Keycloak" },
-                    { 2, "JavaScript is a high-level, often just-in-time compiled language that conforms to the ECMAScript standard.", "JavaScript" },
-                    { 3, "Tailwind CSS is an open source CSS framework.", "Tailwind" }
+                    { 1, "Topics related to engineering, including mechanical, electrical, civil, and chemical engineering.", "Engineering" },
+                    { 2, "Topics related to law, including civil law, criminal law, international law, and human rights.", "Law" },
+                    { 3, "Topics related to business, including accounting, finance, marketing, and management.", "Business" },
+                    { 4, "Topics related to medicine, including anatomy, physiology, pharmacology, and pathology.", "Medicine" },
+                    { 5, "Topics related to education, including teaching methods, curriculum design, educational psychology, and special education.", "Education" }
                 });
 
             migrationBuilder.InsertData(
@@ -345,15 +351,15 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "Bio", "FunFact", "KeycloakId", "Picture", "Status", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Is from GBG", "Formula", "2ff40a61-2dea-418b-ad08-06aa0e0498fb", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Filip" },
-                    { 2, "ya", "Big Formula", "f428f142-cae0-4429-b846-991c67fc4d4f", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Tommy" },
-                    { 3, "Karate", "Artist", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Maryam" },
-                    { 4, "Varberg", ".NET utvecklare", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "TinTin" },
-                    { 5, "Jag älskar skövde", "Bestämd", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Mikael" },
-                    { 6, "Jag älskar också skövde", "Gillar att koda", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Erik" },
-                    { 7, "Jag får andra att skratta", "React är min grej", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Alexander" },
-                    { 8, "Jag gillar promenader", "Bra på Frontend", "", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Amanda" },
-                    { 9, "Jag gillar promenader", "Bra på Frontend", "qweqwe", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "", "Manda" }
+                    { 1, "Software engineer by profession. Love to play football in free time.", "I can solve a Rubik's cube in under a minute.", "7a2a4108-21b7-4a7b-9e15-415262ef547d", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Working", "John" },
+                    { 2, "Marketing professional who loves to read and travel.", "I have visited 10 countries in the last year.", "f428f142-cae0-4429-b846-991c67fc4d4f", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Working", "Jane" },
+                    { 3, "Computer science major at Chalmers University. Enjoys playing video games and watching sci-fi movies.", "I have won several programming competitions.", "5da8c3d6-3edc-4ff4-9f80-d75a35ca470c", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Student", "Alice" },
+                    { 4, "Studying psychology at Yale University. Passionate about music and plays the guitar.", "I can play the guitar upside down and backwards.", "82070311-b1ca-4828-bb68-9a62b957361e", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Student", "Bob" },
+                    { 5, "Accountant by profession. Loves to hike and explore nature.", "I have climbed Mount Kilimanjaro.", "4a7663b6-6940-46c3-86ef-659f014ae8d1", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Working", "Sarah" },
+                    { 6, "Sales executive who enjoys playing basketball and cooking.", "I have cooked for a Michelin-starred chef.", "b6781ded-8de2-416f-b03b-0fade74353fe", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Working", "David" },
+                    { 7, "Studying medicine at LMN University. Enjoys practicing yoga and volunteering at a local hospital.", "I can hold a handstand for over a minute.", "1cf5b92c-a998-41e0-9ad2-d7c2ff1c2673", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Student", "Emily" },
+                    { 8, "Studying finance at PQR College. Enjoys playing tennis and watching documentaries.", "I have won several tennis tournaments in my city.", "cd42f358-b591-4f7b-a6d3-4bd8e0b840af", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Student", "Chris" },
+                    { 9, "Graphic designer by profession. Enjoys painting and hiking on weekends.", "I have exhibited my paintings in several art galleries.", "f0b6c858-24bc-4d03-b89e-6269f8c43241", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", "Working", "Avery" }
                 });
 
             migrationBuilder.InsertData(
@@ -364,7 +370,9 @@ namespace AlumniNetworkAPI.Migrations
                     { 1, 1 },
                     { 2, 2 },
                     { 2, 3 },
-                    { 3, 3 }
+                    { 3, 3 },
+                    { 4, 5 },
+                    { 5, 6 }
                 });
 
             migrationBuilder.InsertData(
@@ -373,8 +381,11 @@ namespace AlumniNetworkAPI.Migrations
                 values: new object[,]
                 {
                     { 1, 2 },
-                    { 3, 2 },
-                    { 1, 3 }
+                    { 5, 2 },
+                    { 3, 3 },
+                    { 4, 4 },
+                    { 5, 4 },
+                    { 2, 5 }
                 });
 
             migrationBuilder.InsertData(
@@ -388,12 +399,17 @@ namespace AlumniNetworkAPI.Migrations
                     { 1, 4 },
                     { 1, 5 },
                     { 1, 6 },
-                    { 2, 1 },
+                    { 2, 4 },
                     { 2, 8 },
                     { 3, 5 },
                     { 3, 6 },
                     { 4, 2 },
-                    { 5, 2 }
+                    { 5, 2 },
+                    { 5, 4 },
+                    { 6, 3 },
+                    { 6, 6 },
+                    { 7, 8 },
+                    { 7, 9 }
                 });
 
             migrationBuilder.InsertData(
@@ -401,10 +417,11 @@ namespace AlumniNetworkAPI.Migrations
                 columns: new[] { "Id", "AuthorId", "Body", "EventId", "GroupId", "LastUpdated", "ParentId", "RecieverId", "Title", "TopicId" },
                 values: new object[,]
                 {
-                    { 1, 1, "Hejsan svejsan", 2, 1, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5211), null, null, "Maryams Dagbok", 1 },
-                    { 2, 2, "Svejsan Hejsan", null, 2, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5249), null, null, "Maryams Ica Lista", 2 },
-                    { 3, 3, "Hej svej", null, 3, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5252), null, null, "Maryams Hemliga bok", 1 },
-                    { 4, 4, "Hemligt!", null, 4, new DateTime(2023, 3, 25, 12, 22, 38, 499, DateTimeKind.Local).AddTicks(5254), null, null, "Filips äventyr", 3 }
+                    { 1, 1, "As an electrical engineering major, I have learned a lot during my time in college. Here are some tips for success: 1. Stay organized and manage your time well. 2. Take advantage of networking opportunities. 3. Get hands-on experience through internships or research. 4. Stay up-to-date with the latest technologies and trends. Good luck!", 1, 1, new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3009), null, null, "Tips for Electrical Engineering Students", 1 },
+                    { 2, 2, "If you're planning to take the bar exam, it's important to start preparing early. Here are some tips: 1. Create a study schedule and stick to it. 2. Take practice exams to get familiar with the format and types of questions. 3. Join a study group to stay motivated and get support. 4. Take care of yourself and manage your stress. You can do it!", 2, 2, new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3044), null, null, "Preparing for the Bar Exam", 2 },
+                    { 3, 3, "Starting a small business can be challenging, but also very rewarding. Here are some tips to help you get started: 1. Conduct market research to identify a need for your product or service. 2. Create a business plan and set clear goals. 3. Secure funding and resources. 4. Build a strong team and culture. Good luck on your entrepreneurial journey!", 3, 3, new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3047), null, null, "Tips for Starting a Small Business", 3 },
+                    { 4, 4, "As a medical resident, I have had many challenges and opportunities for growth. Here are some things I have learned: 1. Time management is key. 2. Communication skills are critical. 3. Self-care is important to avoid burnout. 4. Learning is a lifelong process. Best of luck to all medical residents!", 1, 4, new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3049), null, null, "My Experience as a Medical Resident", 4 },
+                    { 5, 5, "STEM education is crucial for the future of our society and economy. Here are some reasons why: 1. STEM careers are in high demand and offer high salaries. 2. STEM skills are needed for innovation and problem-solving. 3. STEM education can promote diversity and social equality. Let's encourage more young people to pursue STEM education!", 4, 1, new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3052), null, null, "The Importance of STEM Education", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -434,9 +451,9 @@ namespace AlumniNetworkAPI.Migrations
                     { 2, 4 },
                     { 1, 5 },
                     { 3, 5 },
-                    { 3, 7 },
-                    { 2, 8 },
-                    { 3, 8 }
+                    { 4, 7 },
+                    { 5, 8 },
+                    { 3, 9 }
                 });
 
             migrationBuilder.InsertData(
@@ -446,13 +463,19 @@ namespace AlumniNetworkAPI.Migrations
                 {
                     { 1, 1 },
                     { 3, 1 },
+                    { 5, 1 },
                     { 2, 2 },
                     { 3, 2 },
                     { 2, 3 },
+                    { 4, 3 },
                     { 1, 4 },
                     { 2, 4 },
                     { 1, 5 },
-                    { 3, 5 }
+                    { 3, 5 },
+                    { 4, 6 },
+                    { 4, 7 },
+                    { 5, 8 },
+                    { 5, 9 }
                 });
 
             migrationBuilder.CreateIndex(
