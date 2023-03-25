@@ -14,6 +14,8 @@ using AlumniNetworkAPI.Models.Dtos.Users;
 using AlumniNetworkAPI.Helpers;
 using AlumniNetworkAPI.CustomExceptions;
 using AlumniNetworkAPI.Dtos;
+using AlumniNetworkAPI.Models.Dtos.Groups;
+using AlumniNetworkAPI.Models.Dtos.Topics;
 
 namespace AlumniNetworkAPI.Controllers
 {
@@ -56,6 +58,26 @@ namespace AlumniNetworkAPI.Controllers
 
                 HttpContext.Response.Headers.Add("Location", profileUrl);
                 return StatusCode(303);
+        }
+ 
+        /// <summary>
+        /// Returns user id of user that is calling the endpoint and a corresponding redirect link.
+        /// </summary>
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<UserReadGroupDto>>> GetUsersByNames()
+        {
+            try
+            {
+                return _mapper.Map<List<UserReadGroupDto>>(await _userService.GetUsersByName());
+            }
+            catch (NoAccessToGroupException ex)
+            {
+                return Forbid();
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>

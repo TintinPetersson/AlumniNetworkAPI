@@ -10,10 +10,13 @@ namespace AlumniNetworkAPI.Profiles
         public UserProfile()
         {
             CreateMap<User, UserReadDto>();
+            CreateMap<User, UserReadGroupDto>();
 
             CreateMap<User, UserPostReadDto>();
 
             CreateMap<UserCreateDto, User>();
+
+            CreateMap<UserCreateGroupDto, User>();
 
             CreateMap<UserEditDto, User>();
         }
