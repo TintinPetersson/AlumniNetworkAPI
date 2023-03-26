@@ -70,10 +70,10 @@ namespace AlumniNetworkAPI.Migrations
                             AllowGuests = true,
                             BannerImage = "machinelearning.jpg",
                             Description = "Join us for an online workshop on the basics of machine learning. Learn about various algorithms and techniques used in machine learning.",
-                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2023, 3, 5, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Introduction to Machine Learning",
-                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartTime = new DateTime(2023, 3, 5, 10, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -81,10 +81,10 @@ namespace AlumniNetworkAPI.Migrations
                             AllowGuests = true,
                             BannerImage = "networking.jpg",
                             Description = "Join us for an evening of networking and socializing with fellow alumni. Make new connections, catch up with old friends, and expand your professional network.",
-                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2023, 3, 10, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Alumni Networking Mixer",
-                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartTime = new DateTime(2023, 3, 10, 10, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -92,10 +92,10 @@ namespace AlumniNetworkAPI.Migrations
                             AllowGuests = true,
                             BannerImage = "communityservice.jpg",
                             Description = "Join us for a community service project to give back to the community. Help us clean up a local park and make it a better place for everyone.",
-                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2023, 3, 15, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Community Service Project",
-                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartTime = new DateTime(2023, 3, 15, 10, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -103,10 +103,10 @@ namespace AlumniNetworkAPI.Migrations
                             AllowGuests = true,
                             BannerImage = "homecoming.jpg",
                             Description = "Join us for the annual alumni homecoming event. Reconnect with old friends, meet new ones, and celebrate the university's legacy.",
-                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2023, 3, 20, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Alumni Homecoming 2023",
-                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartTime = new DateTime(2023, 3, 20, 10, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -114,10 +114,10 @@ namespace AlumniNetworkAPI.Migrations
                             AllowGuests = false,
                             BannerImage = "careerfair.jpg",
                             Description = "Looking for new job opportunities? Join us for the annual career fair, where you can network with employers and learn about job openings.",
-                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2023, 3, 25, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Career Fair 2023",
-                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartTime = new DateTime(2023, 3, 25, 10, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -258,7 +258,7 @@ namespace AlumniNetworkAPI.Migrations
                             Body = "As an electrical engineering major, I have learned a lot during my time in college. Here are some tips for success: 1. Stay organized and manage your time well. 2. Take advantage of networking opportunities. 3. Get hands-on experience through internships or research. 4. Stay up-to-date with the latest technologies and trends. Good luck!",
                             EventId = 1,
                             GroupId = 1,
-                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3009),
+                            LastUpdated = new DateTime(2023, 3, 26, 17, 24, 48, 888, DateTimeKind.Local).AddTicks(1868),
                             Title = "Tips for Electrical Engineering Students",
                             TopicId = 1
                         },
@@ -269,7 +269,7 @@ namespace AlumniNetworkAPI.Migrations
                             Body = "If you're planning to take the bar exam, it's important to start preparing early. Here are some tips: 1. Create a study schedule and stick to it. 2. Take practice exams to get familiar with the format and types of questions. 3. Join a study group to stay motivated and get support. 4. Take care of yourself and manage your stress. You can do it!",
                             EventId = 2,
                             GroupId = 2,
-                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3044),
+                            LastUpdated = new DateTime(2023, 3, 26, 17, 24, 48, 888, DateTimeKind.Local).AddTicks(2183),
                             Title = "Preparing for the Bar Exam",
                             TopicId = 2
                         },
@@ -280,7 +280,7 @@ namespace AlumniNetworkAPI.Migrations
                             Body = "Starting a small business can be challenging, but also very rewarding. Here are some tips to help you get started: 1. Conduct market research to identify a need for your product or service. 2. Create a business plan and set clear goals. 3. Secure funding and resources. 4. Build a strong team and culture. Good luck on your entrepreneurial journey!",
                             EventId = 3,
                             GroupId = 3,
-                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3047),
+                            LastUpdated = new DateTime(2023, 3, 26, 17, 24, 48, 888, DateTimeKind.Local).AddTicks(2192),
                             Title = "Tips for Starting a Small Business",
                             TopicId = 3
                         },
@@ -291,7 +291,7 @@ namespace AlumniNetworkAPI.Migrations
                             Body = "As a medical resident, I have had many challenges and opportunities for growth. Here are some things I have learned: 1. Time management is key. 2. Communication skills are critical. 3. Self-care is important to avoid burnout. 4. Learning is a lifelong process. Best of luck to all medical residents!",
                             EventId = 1,
                             GroupId = 4,
-                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3049),
+                            LastUpdated = new DateTime(2023, 3, 26, 17, 24, 48, 888, DateTimeKind.Local).AddTicks(2196),
                             Title = "My Experience as a Medical Resident",
                             TopicId = 4
                         },
@@ -302,7 +302,7 @@ namespace AlumniNetworkAPI.Migrations
                             Body = "STEM education is crucial for the future of our society and economy. Here are some reasons why: 1. STEM careers are in high demand and offer high salaries. 2. STEM skills are needed for innovation and problem-solving. 3. STEM education can promote diversity and social equality. Let's encourage more young people to pursue STEM education!",
                             EventId = 4,
                             GroupId = 1,
-                            LastUpdated = new DateTime(2023, 3, 25, 16, 36, 30, 699, DateTimeKind.Local).AddTicks(3052),
+                            LastUpdated = new DateTime(2023, 3, 26, 17, 24, 48, 888, DateTimeKind.Local).AddTicks(2200),
                             Title = "The Importance of STEM Education",
                             TopicId = 1
                         });

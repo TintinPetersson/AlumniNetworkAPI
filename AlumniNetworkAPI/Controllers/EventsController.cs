@@ -10,7 +10,7 @@ using AlumniNetworkAPI.Models.Domain;
 
 namespace AlumniNetworkAPI.Controllers
 {
-    [Route("api/v1/event")]
+    [Route("api/v1/Event")]
     [ApiController]
     [Authorize]
     [Produces(MediaTypeNames.Application.Json)]
@@ -35,8 +35,7 @@ namespace AlumniNetworkAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventReadDto>>> GetEvents()
         {
-            string keycloakId = this.User.GetId();
-            return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync(keycloakId));
+            return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync());
         }
         #endregion
 

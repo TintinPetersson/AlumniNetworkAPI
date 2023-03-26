@@ -14,16 +14,13 @@ namespace AlumniNetworkAPI.Services.EventServices
         }
 
         #region Read
-
-        public async Task<IEnumerable<Event>> GetEventsAsync(string keycloakId)
+        public async Task<IEnumerable<Event>> GetEventsAsync()
         {
-            User user = _context.Users.FirstOrDefault(u => u.KeycloakId == keycloakId);
             return await _context.Events.ToListAsync();
         }
         #endregion
 
         #region Add
-
         public async Task<Event> AddEventAsync(Event newEvent, string keycloakId)
         {
             User user = getUserByKeyCloakId(keycloakId);
@@ -68,7 +65,6 @@ namespace AlumniNetworkAPI.Services.EventServices
             _context.Entry(updatedEvent).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
-
         #endregion
 
         #region Create

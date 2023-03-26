@@ -18,10 +18,10 @@ namespace AlumniNetworkAPI.Models.Dtos.Events
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<PostReadDto>? Posts { get; set; } //One-to-many
-        public virtual ICollection<GroupReadDto>? Groups { get; set; } //Many-to-many
-        public virtual ICollection<UserReadDto>? InvitedUsers { get; set; } //Many-to-many
-        public virtual ICollection<UserReadDto>? AcceptedUsers { get; set; } //Many-to-many
-        public virtual ICollection<TopicReadDto>? Topics { get; set; } //Many-to-many
+        public virtual ICollection<PostEventReadDto>? Posts { get; set; } //One-to-many
+        //public virtual ICollection<GroupReadDto>? Groups { get; set; } //Many-to-many
+        //public virtual ICollection<UserReadDto>? InvitedUsers { get; set; } //Many-to-many
+        //public virtual ICollection<UserReadDto>? AcceptedUsers { get; set; } //Many-to-many
+        //public virtual ICollection<TopicReadDto>? Topics { get; set; } //Many-to-many
     }
 }
