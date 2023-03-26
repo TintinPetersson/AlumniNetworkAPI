@@ -16,7 +16,7 @@ public class TopicService : ITopicService
     #region READ
     public async Task<IEnumerable<Topic>> GetTopicsAsync(string? search, int? limit, int? offset)
     {
-        IQueryable<Topic> query = _context.Topics;
+        IQueryable<Topic> query = _context.Topics.Include(u => u.Users);
 
         if (!string.IsNullOrEmpty(search))
             query = query.Where(t => t.Name.Contains(search));     
