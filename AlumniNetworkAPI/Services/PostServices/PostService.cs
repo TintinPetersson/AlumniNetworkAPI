@@ -101,12 +101,20 @@ namespace AlumniNetworkAPI.Services.PostServices
 
             if (domainPost.TopicId != null)
             {
-                Topic audienceToPostTo = _context.Topics.First(t => t.Id == domainPost.TopicId);
+                Topic audienceToPostTo = _context.Topics.FirstOrDefault(t => t.Id == domainPost.TopicId);
+                if (audienceToPostTo == null)
+                {
+                    throw new KeyNotFoundException("Invalid TopicId");
+                }
                 ICollection<Topic>? audienceRelation = user.Topics;
             }
             else if (domainPost.GroupId != null)
             {
-                Group audienceToPostTo = _context.Groups.First(g => g.Id == domainPost.GroupId);
+                Group audienceToPostTo = _context.Groups.FirstOrDefault(g => g.Id == domainPost.GroupId);
+                if (audienceToPostTo == null)
+                {
+                    throw new KeyNotFoundException("Invalid GroupId");
+                }
                 ICollection<Group>? audienceRelation = user.Groups;
             }
             //else
@@ -114,17 +122,18 @@ namespace AlumniNetworkAPI.Services.PostServices
             //    throw new KeyNotFoundException();
             //}
 
-            if(domainPost.RecieverId != null)
+            if (domainPost.RecieverId != null)
             {
                 var parentUser = await _context.Users.FirstAsync(u => u.Id == domainPost.RecieverId);
 
+                domainPost.Author = user;
                 domainPost.AuthorId = user.Id;
                 domainPost.Title = $"Reply to {parentUser.Username}";
 
                 parentUser.RecievedPosts = new List<Post>
-            {
-                domainPost
-            };
+                {
+                    domainPost
+                };
 
                 _context.Entry(parentUser).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
@@ -133,9 +142,10 @@ namespace AlumniNetworkAPI.Services.PostServices
             else
             {
                 user.AuthoredPosts = new List<Post>
-            {
-                domainPost
-            };
+                {
+                    domainPost
+                };
+                domainPost.Author = user;
                 domainPost.AuthorId = user.Id;
                 _context.Posts.Add(domainPost);
                 _context.Entry(user).State = EntityState.Modified;
