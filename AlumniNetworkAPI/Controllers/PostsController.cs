@@ -261,8 +261,9 @@ namespace AlumniNetworkAPI.Controllers
             {
                 return BadRequest("Invalid audience");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return Forbid();
             }
         }
