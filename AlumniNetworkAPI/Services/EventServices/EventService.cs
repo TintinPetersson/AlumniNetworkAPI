@@ -14,9 +14,18 @@ namespace AlumniNetworkAPI.Services.EventServices
         }
 
         #region Read
-        public async Task<IEnumerable<Event>> GetEventsAsync()
+        public async Task<IEnumerable<Event>> GetEventsAsync(string keycloakId)
         {
-            return await _context.Events.ToListAsync();
+            User user = getUserByKeyCloakId(keycloakId);
+
+            return await _context.Events
+                .Include(e => e.Groups)
+                //.Include(e => e.Posts).ThenInclude(p => p.Author)
+                .Include(e => e.AcceptedUsers)
+                .Include(e => e.InvitedUsers)
+                .Include(e => e.Author)
+                .Where(e => e.Groups.Any(g => user.Groups.Contains(g)))
+                .ToListAsync();
         }
         #endregion
 
