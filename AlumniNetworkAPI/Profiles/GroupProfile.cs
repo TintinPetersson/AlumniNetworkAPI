@@ -11,6 +11,7 @@ namespace AlumniNetworkAPI.Profiles
             CreateMap<GroupCreateDto, Group>();
             CreateMap<GroupEditDto, Group>();
             CreateMap<Group, GroupReadDto>();
+            CreateMap<Group, GroupUserReadDTO>();
         }
     }
 }

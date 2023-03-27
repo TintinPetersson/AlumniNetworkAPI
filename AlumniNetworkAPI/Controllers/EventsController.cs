@@ -35,7 +35,9 @@ namespace AlumniNetworkAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventReadDto>>> GetEvents()
         {
-            return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync());
+            string keycloakId = this.User.GetId();
+
+            return _mapper.Map<List<EventReadDto>>(await _eventService.GetEventsAsync(keycloakId));
         }
         #endregion
 
