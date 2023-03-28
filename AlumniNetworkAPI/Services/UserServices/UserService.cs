@@ -43,6 +43,7 @@ namespace AlumniNetworkAPI.Services.UserServices
             var user = await _context.Users
                 .Include(u => u.AuthoredPosts)
                 .Include(u => u.Groups)
+                //.Include(u => u.UnrespondedEvents)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if(user == null)

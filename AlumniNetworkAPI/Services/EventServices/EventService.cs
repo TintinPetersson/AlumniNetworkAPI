@@ -36,6 +36,7 @@ namespace AlumniNetworkAPI.Services.EventServices
 
             newEvent.LastUpdated = DateTime.Now;
             newEvent.AuthorId = user.Id;
+            newEvent.AcceptedUsers = new List<User> { user };
             await _context.Events.AddAsync(newEvent);
             await _context.SaveChangesAsync();
             return newEvent;
@@ -86,6 +87,25 @@ namespace AlumniNetworkAPI.Services.EventServices
             Group group = await _context.Groups
                 .Where(g => g.Id == groupId)
                 .FirstOrDefaultAsync();
+
+            if (group.Users == null)
+            {
+                group.Users = new List<User>();
+            }
+
+            foreach (var userInGroup in group.Users)
+            {
+                    var userI = await _context.Users.FindAsync(userInGroup.Id);
+
+                    userI.UnrespondedEvents = new List<Event> { ev };
+                    ev.InvitedUsers = new List<User> { userI };
+
+                    if (userI != null)
+                        group.Users.Add(userI);
+                    else
+                        throw new Exception($"User with id {userInGroup.Id} does not exist.");
+            }
+
 
             if (ev.Groups == null)
             {
