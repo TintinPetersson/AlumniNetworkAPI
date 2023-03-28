@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AlumniNetworkAPI.Models.Domain;
+using AlumniNetworkAPI.Models.Dtos.Posts;
+using System.ComponentModel.DataAnnotations;
 
 namespace AlumniNetworkAPI.Models.Dtos.Events
 {
@@ -10,5 +12,6 @@ namespace AlumniNetworkAPI.Models.Dtos.Events
         public string? BannerImage { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public int? GroupId {get; set; }
     }
 }
