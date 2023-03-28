@@ -1,6 +1,4 @@
-﻿using AlumniNetworkAPI.Models.Domain;
-using AlumniNetworkAPI.Models.Dtos.Posts;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AlumniNetworkAPI.Models.Dtos.Events
 {

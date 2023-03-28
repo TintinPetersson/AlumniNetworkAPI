@@ -20,8 +20,8 @@ namespace AlumniNetworkAPI.Models.Dtos.Events
 
         public virtual ICollection<PostEventReadDto>? Posts { get; set; } //One-to-many
         public virtual ICollection<GroupUserReadDTO>? Groups { get; set; } //Many-to-many
-        public virtual ICollection<UserReadDto>? InvitedUsers { get; set; } //Many-to-many
-        public virtual ICollection<UserReadDto>? AcceptedUsers { get; set; } //Many-to-many
+        public virtual ICollection<UserPostReadDto>? InvitedUsers { get; set; } //Many-to-many
+        public virtual ICollection<UserPostReadDto>? AcceptedUsers { get; set; } //Many-to-many
         //public virtual ICollection<TopicReadDto>? Topics { get; set; } //Many-to-many
     }
 }
