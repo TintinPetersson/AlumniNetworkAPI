@@ -9,8 +9,7 @@ Alumni Network Backend is a robust ASP.NET 6 Web API built using C# that serves 
 3. [Getting Started](#getting-started)
 4. [Usage Instructions](#usage-instructions)
 5. [Database Diagram](#database-diagram)
-6. [Contributing Guidelines](#contributing-guidelines)
-7. [License Information](#license-information)
+6. [License Information](#license-information)
 
 ## Overview
 
@@ -23,6 +22,7 @@ The Alumni Network Backend offers the following key functionalities:
 - Custom mock data for testing
 - Query parameters support for select GET endpoints
 
+Link to frontend part of the application: [Alumni Network FE](https://github.com/Filipll97/Case_Alumni_Network)
 ## Prerequisites
 
 Before you begin, ensure your development environment meets the following requirements:
@@ -63,7 +63,7 @@ The API should now be accessible at `http://localhost:5000`.
 
 ## Database Diagram
 
-<!-- Insert Database Diagram Here -->
+![image](https://user-images.githubusercontent.com/108069522/228522696-e56c5353-e50b-496a-9fa7-2b2ec6871131.png)
 
 ## License Information
 
